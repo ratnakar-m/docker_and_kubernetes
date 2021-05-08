@@ -1,0 +1,11 @@
+# Simulation Shell Application
+
+FROM ubuntu
+LABEL MAINTAINER ratnakar@oracle.com
+COPY sample.sh /code/sample.sh
+COPY testfile /code/testfile
+RUN chmod +x /code/sample.sh
+ENTRYPOINT ["sh","/code/sample.sh"]
+CMD ["/code/testfile"]
+
+# docker build -t ubuntu:4 -f Dockerfile2 .

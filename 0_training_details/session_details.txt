@@ -1,0 +1,58 @@
+Enrollment ID: 9557192
+
+1. https://help-education.oracle.com/pls/apex/f?p=121 
+
+Since internal training LVC setup wizard is not required.
+
+
+2. https://login.oracle.com/oamfed/idp/initiatesso?providerid=sso4-seertechsolutions-com-opensaml-sp&returnurl=deeplinkactivatekey%3D6E4222E66B68FEF1
+
+License 6E4222E66B68FEF1
+
+There is no ekit for the above course and so was not able to download the course material
+ 
+
+3. On the first days of the class, please navigate to https://help-education.oracle.com/pls/apex/f?p=155:1:::::ROOM_NAME:lvcinstructor201 and follow the on-screen instructions for logging into your web and audio conferences.
+
+Your audio details are 
+Conference Code : 
+Security Passcode  : 123123123
+
+---------------------------------EMAIL to ouinternaltraining_ww@oracle.com; techtrainingblr_in@oracle.com--------------------
+
+Hi,
+
+I have registered for a training with Enrollment ID: 9557192
+
+When I referred to the steps which I got in email to setup LVC, things did not work since it is internal training
+
+To avoid any last minute issues,  I would like contact trainer or training partner to set the things up properly before the first session.
+
+Let me know the contact of trainer or training partner so that I can check the setup requirements and pre-requisites before the first session.
+
+Thanks
+Ratnakar
+
+
+---------------------FROM MANJU VARRIER-----------------------------
+
+Hi All,
+        We are pleased to confirm your nomination for training  Docker & KuberenetesEMP LVC  scheduled from  23rd to 27th Nov.
+Program details are as follows
+    EVENT NAME:   Docker & Kubernetes EMP LVC 
+    START DATE:  23-Nov-2020
+    DURATION:   5
+    EVENT TIMES:             9:30am to 5:30pm 
+    EVENT ID  :				96202061
+		VENUE:At your Desk
+    Zoom :  
+https://oracle.zoom.us/j/488866249?pwd=TDBlQ2FxUCs0VFlwRFR6dEtLQnZBdz09 
+
+
+Help desk 91-80-41071858 available between 9:30 am to 5:00 pm on business days.
+Please fee free to contact me in case of any queries.
+
+                          These trainings are scheduled only for India employees
+
+ 
+

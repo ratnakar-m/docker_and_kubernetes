@@ -1,0 +1,11 @@
+# Simulation of docker commit process for vi Editor
+
+FROM ubuntu:18.04
+LABEL MAINTAINER ratnakar@oracle.com
+RUN mkdir /test
+COPY testfile /test/testfile
+RUN apt-get -y update
+RUN apt-get -y install vim
+ENV version=1
+
+#docker build -t ubuntu-cust:2 -f Dockerfile .

@@ -1,0 +1,33 @@
+docker service create --name psql --network mydrupal -e POSTGRES_PASSWORD=mypass postgres
+docker service create --name drupal --network mydrupal -p 80:80 drupal:7.72
+
+psql db port:5432
+
+username: ratnakar
+pass: test@123
+
+install url: http://node1/install.php
+
+URL:http://node1/node
+URL:http://node1/node/1
+
+scenario 1:
+
+psql - replica 1
+drupal - replica 1
+
+root@node1:~# docker service ps drupal
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE            ERROR               PORTS
+m5k0yliv3ff7        drupal.1            drupal:7.72         node3               Running             Running 33 seconds ago
+root@node1:~# docker service ps psql
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE                ERROR               PORTS
+vwsy1ouj3xxd        psql.1              postgres:latest     node1               Running             Running about a minute ago
+
+
+able to demonstrate inter service communication
+ - able to create a site with the site metadata going to DB (implies drupal service is able to communicate to psql)
+able to demonstarte routing
+ - no matter what node is given in the URL, it always routes to the node with drupal running
+
+
+Note if the volumes of drupal and psql are maintained pointed correctly by services, then the multiple replicas works smoothly. If there are no volumes associated for either drupal or pssql, then there will be unexpected behavior.

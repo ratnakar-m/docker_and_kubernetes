@@ -1,0 +1,11 @@
+# REST API Implementation
+
+FROM node:14
+LABEL MAINTAINER "Ratnakar"
+COPY node.js /code/node.js
+COPY data.json /code/data.json
+RUN npm install -y express body-parser
+EXPOSE 9000
+CMD node /code/node.js
+
+# docker build -t newnode -f Dockerfile5 .

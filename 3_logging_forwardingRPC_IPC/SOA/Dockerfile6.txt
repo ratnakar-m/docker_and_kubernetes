@@ -1,0 +1,7 @@
+from mysql:5.7
+env MYSQL_ROOT_PASSWORD=admin
+env MYSQL_DATABASE=demo
+copy *.sql /docker-entrypoint-initdb.d/
+
+#docker build -t newsoadb -f Dockerfile6 .
+#docker run -d --name testsoadb --net=dbnetwork --ip=172.100.100.100 newsoadb

@@ -1,0 +1,65 @@
+DNS Round robin (called a poor man's load balancing)
+----------------------------------------------------
+docker network create search_net
+
+docker container run --network-alias search.com --network search_net --name es1 -d elasticsearch:2
+docker container run --network-alias search.com --network search_net --name es2 -d elasticsearch:2
+
+
+alpine nslookup:
+----------------
+docker container run -it --network search_net --rm alpine:3.11.2 nslookup search.com
+
+	nslookup: can't resolve '(null)': Name does not resolve
+
+	Name:      search.com
+	Address 1: 172.21.0.2 es2.search_net
+	Address 2: 172.21.0.3 es1.search_net
+	
+centos: hit the url with dns name
+---------------------------------
+
+docker container run -it --network search_net --name new_centos centos bash
+
+yum install -y bind-utils
+
+nslookup search.com
+	Server:         127.0.0.11
+	Address:        127.0.0.11#53
+
+	Non-authoritative answer:
+	Name:   search.com
+	Address: 172.21.0.2
+	Name:   search.com
+	Address: 172.21.0.3
+	
+[root@d83c8e32d853 /]# curl search.com:9200
+{
+  "name" : "Herman Schultz",
+  "cluster_name" : "elasticsearch",
+  "cluster_uuid" : "82LweR1yRDydFEHDfIHD4A",
+  "version" : {
+    "number" : "2.4.6",
+    "build_hash" : "5376dca9f70f3abef96a77f4bb22720ace8240fd",
+    "build_timestamp" : "2017-07-18T12:17:44Z",
+    "build_snapshot" : false,
+    "lucene_version" : "5.5.4"
+  },
+  "tagline" : "You Know, for Search"
+}
+
+}
+[root@d83c8e32d853 /]# curl search.com:9200
+{
+  "name" : "David Cannon",
+  "cluster_name" : "elasticsearch",
+  "cluster_uuid" : "vU_M60oRTzW4tEwQD1GvwA",
+  "version" : {
+    "number" : "2.4.6",
+    "build_hash" : "5376dca9f70f3abef96a77f4bb22720ace8240fd",
+    "build_timestamp" : "2017-07-18T12:17:44Z",
+    "build_snapshot" : false,
+    "lucene_version" : "5.5.4"
+  },
+  "tagline" : "You Know, for Search"
+}

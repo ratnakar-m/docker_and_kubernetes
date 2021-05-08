@@ -1,0 +1,186 @@
+    1  exit
+    2  exit
+    3  docker-machine ls
+    4  cd ~
+    5  pwd
+    6  cd .docker
+    7  ls
+    8  cd machine/
+    9  cd machines
+   10  cd default
+   11  pwd
+   12  ls
+   13  vi config.json
+   14  cd ~
+   15  notepad config.json
+   16  clear
+   17  docker-machine ssh default
+   18  clear
+   19  exit
+   20  docker-machine ssh default
+   21  clear
+   22  wzit
+   23  exit
+   24  docker-machine ls
+   25  docker-machine env default
+   26  docker-machine ls
+   27  docker images
+   28  docker run --rm ping:1
+   29  pwd
+   30  docker run -it --rm ubuntu bash
+   31  docker ps
+   32  docker run --rm ping:1 $(docker inspect -f "{{.NetworkSettings.IPAddress}}
+   33  " TestUbuntu)
+   34  docker network ls
+   35  docker run --rm ping:1 $(docker-machine ip default)
+   36  docker run --rm ping:1 www.ndtv.com
+   37  docker run --rm ping:1 hub.docker.com
+   38  exit
+   39  minikube ssh
+   40  exit
+   41  minikube version
+   42  kubectl version --client
+   43  minikube start --cpus=2 --memory=2048 --vm-driver=virtualbox
+   44  minikube status
+   45  kubectl cluster-info
+   46  kubectl api-resources
+   47  kubectl get nodes
+   48  kubectl get nodes -o wide
+   49  kubectl get namespaces
+   50  kubectl get pods 
+   51  kubectl get pods  -n kube-system
+   52  kubectl get pods  -n kube-system -o wide
+   53  minikube ip
+   54  kubectl describe node minikube
+   55  kubectl describe namespace kube-system
+   56  kubectl get pods -n kube-system
+   57  kubectl describe pod etcd-minikube -n kube-system
+   58  cd ~/.kube
+   59  pwd
+   60  ls
+   61  cat config
+   62  kubectl get pods
+   63  kubectl create namespace demo
+   64  kubectl get ns
+   65  kubectl get pods -n demo
+   66  kubectl get pods
+   67  kubectl config set-context --current --namespace demo
+   68  kubectl get pods
+   69  cat config
+   70  kubectl config view
+   71  kubectl run apache-pod --image=httpd
+   72  kubectl get pods -w
+   73  kubectl get pods
+   74  kubectl get pods -o wide
+   75  kubectl describe pod apache-pod
+   76  history
+   77  history > commandhistory-minikube
+   78  minikube stop
+   79  exit
+   80  minikube start
+   81  minikube status
+   82  kubectl get ns
+   83  kubectl config set-context --current --namespace demo
+   84  kubectl get pods
+   85  kubectl get pods -n kube-system
+   86  kubectl config view
+   87  kubectl get pods
+   88  kubectl get pods -o wide
+   89  kubectl expose pod apache-pod --type=NodePort --port=80
+   90  kubectl get services
+   91  kubectl describe service apache-pod
+   92  minikube service apache-pod -n demo
+   93  minikube ip
+   94  curl --silent http://192.168.99.101:31248
+   95  clear
+   96  kubectl run test-pod --image=alpine
+   97  kubectl get pods -w
+   98  kubectl delete pod test-pod
+   99  kubectl run test-pod --image=alpine -- sleep 3600
+  100  kubectl get pods
+  101  kubectl describe pod test-pod
+  102  kubectl get services --all-namespaces
+  103  kubectl delete service apache-pod
+  104  kubectl get pods
+  105  kubectl get services
+  106  kubectl expose pod apache-pod --type=ClusterIP --port=80
+  107  kubectl get services
+  108  minikube service apache-pod -n demo
+  109  clear
+  110  kubectl delete svc apache-pod
+  111  kubectl expose pod apache-pod --target-port=80 --port=1000 --type=NodePort
+  112  kubectl get services
+  113  minikube service apache-pod -n demo
+  114  kubectl edit pod apache-pod
+  115  kubectl edit pod apache-pod
+  116  kubectl get pods -l version=1
+  117  kubectl get pods
+  118  kubectl describe pod apache-pod
+  119  kubectl run check-pod --image=nginx -n demo --dry-run -o yaml
+  120  kubectl api-resources |grep pod
+  121  mkdir yamls
+  122  cd yamls
+  123  notepad two-containers
+  124  cat two-containers.txt 
+  125  kubectl create -f two-containers.txt 
+  126  kubectl get pods
+  127  kubectl describe pod two-containers
+  128  clear
+  129  kubectl api-resources | grep configmap
+  130  kubectl api-resources | grep secret
+  131  kubectl api-resources | grep crd
+  132  kubectl create secret database-values --from-literal=username=root --from-literal=password=admin
+  133  kubectl create secret generic database-values --from-literal=username=root --from-literal=password=admin
+  134  kubectl get secrets
+  135  kubectl describe secret database-values
+  136  kubectl get secret database-values -o yaml
+  137  notepad podwithsecrets\
+  138  notepad podwithsecrets
+  139  kubectl create -f podwithsecrets.txt 
+  140  kubectl get pods
+  141  kubectl exec secret-envars-test-pod env
+  142  clear
+  143  notepad cm
+  144  cat cm.txt
+  145  kubectl create -f cm.txt
+  146  kubectl describe cm example-configmap
+  147  notepad pod-withcm
+  148  kubectl create -f pod-withcm.txt 
+  149  kubectl get pods
+  150  kubectl exec pod-from-cm   env
+  151  kubectl edit cm example-configmap
+  152  kubectl describe cm example-configmap
+  153  kubectl exec pod-from-cm   env
+  154  notepad pod-withcmvolume
+  155  kubectl create -f pod-withcmvolume.txt 
+  156  kubectl get pods
+  157  kubectl edit cm example-configmap
+  158  kubectl describe cm example-configmap
+  159  clear
+  160  kubectl api-resources | grep deploy
+  161  kubectl create deployment web-deployment --image=httpd
+  162  kubectl get deployments
+  163  kubectl get pods
+  164  kubectl expose deployment web-deployment --port=80 --type=NodePort
+  165  kubectl get deployments -o wide
+  166  kubectl get pods -l app=web-deployment
+  167  kubectl get pods -l app=web-deployment -o wide
+  168  kubectl get services
+  169  kubectl describe service web-deployment
+  170  kubectl edit deployment web-deployment
+  171  kubectl get pods -l app=web-deployment -o wide
+  172  kubectl get pods -l app=web-deployment -o wide
+  173  kubectl describe service web-deployment
+  174  kubectl describe deployment web-deployment
+  175  kubectl get events
+  176  minikube addons list
+  177  minikube addons enable metrics-server
+  178  minikube addons enable dashboard
+  179  kubectl get pods -n kube-system
+  180  kubectl get ns
+  181  kubectl get pods -n kubernetes-dashboard
+  182  minikube dashboard
+  183  kubectl describe node minikube
+  184* history 
+  185* history 
+  186  history > /c/Users/dhana/commandhistory-minikube-2711

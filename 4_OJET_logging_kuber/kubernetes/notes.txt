@@ -1,0 +1,389 @@
+KUBECTL
+	- managing virtual clusters
+	- kublet agent - in physical machines
+	- docked agent - in physical machines
+	
+Orchestrator (routes the requests) [SERVICE GATEWAY, SERVICE REGISTRY, SERVICE DISCOVERY)
+	- service gateway - single point of enterting the service cluster (request comes to orchestrator)
+	- Authenticates
+	- validates with service registry
+	- discovers the right Node
+	
+	ORCHESTRATOR TOOLS:
+	
+	SERVICE GATEWAY
+		- Kube DNS (default gateway of k8s cluster)
+		- NGINX Plus
+		- OTD (Oracle Traffic Director)
+		
+	SERVICE REGISTRY, SERVICE DISCOVERY 
+		SERVICE REGISTRY
+			- etcd (key-value registry)  - default service registry
+			- kong (uses oracle/mysql as registry)
+			- Zookeeper
+			- consul
+			
+		SERVICE DISCOVERY 
+			- API Server (Service DISCOVERY)
+			
+	INGRESS/EGRESS (Inbound and Outbound traffic)
+		- NGINX
+		- VOYAGER
+		- HA PROXY
+		- 
+	
+---------
+C:\Users\rmallaya>minikube status
+minikube
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+--------
+C:\Users\rmallaya>kubectl cluster-info
+Kubernetes master is running at https://192.168.99.103:8443
+KubeDNS is running at https://192.168.99.103:8443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+-------
+
+POD - Abstraction for unit of scaling one or more containers exposing one or more ports
+	
+	- Main service (container)
+	- Logging (container - side car)
+	- Health Monitor (container - side car)
+	- other 
+	
+POD - In kubernetes, we manage pods and not individual containers
+-----------------
+
+SERVICE REGISTRY - POD
+SERVICE DISCOVERY - POD
+SERVICE GATEWAY - POD
+
+-------------
+Namespace - collection od pods
+pod - collection of containers
+
+If Images are not troubleshooted properly in docker, then it is hard to troubleshoot in the kubernetes
+----------------------
+
+Kubernetes service <- forwarded port from container
+
+
+kubectl api-resources
+
+$ kubectl get nodes
+NAME       STATUS   ROLES    AGE    VERSION
+minikube   Ready    master   3h6m   v1.18.3
+
+$ kubectl get nodes -o wide
+NAME       STATUS   ROLES    AGE    VERSION   INTERNAL-IP      EXTERNAL-IP   OS-IMAGE               KERNEL-VERSION   CONTAINER-RUNTIME
+minikube   Ready    master   3h6m   v1.18.3   192.168.99.103   <none>        Buildroot 2019.02.10   4.19.107         docker://19.3.8
+
+C:\Users\rmallaya>minikube ssh
+                         _             _
+            _         _ ( )           ( )
+  ___ ___  (_)  ___  (_)| |/')  _   _ | |_      __
+/' _ ` _ `\| |/' _ `\| || , <  ( ) ( )| '_`\  /'__`\
+| ( ) ( ) || || ( ) || || |\`\ | (_) || |_) )(  ___/
+(_) (_) (_)(_)(_) (_)(_)(_) (_)`\___/'(_,__/'`\____)
+
+$ sudo -i
+sudo: /etc/environment: No such file or directory
+
+# docker images
+REPOSITORY                                TAG                 IMAGE ID            CREATED             SIZE
+k8s.gcr.io/kube-proxy                     v1.18.3             3439b7546f29        6 months ago        117MB
+k8s.gcr.io/kube-apiserver                 v1.18.3             7e28efa976bd        6 months ago        173MB
+k8s.gcr.io/kube-controller-manager        v1.18.3             da26705ccb4b        6 months ago        162MB
+k8s.gcr.io/kube-scheduler                 v1.18.3             76216c34ed0c        6 months ago        95.3MB
+kubernetesui/dashboard                    v2.0.0              8b32422733b3        7 months ago        222MB
+k8s.gcr.io/pause                          3.2                 80d28bedfe5d        9 months ago        683kB
+k8s.gcr.io/coredns                        1.6.7               67da37a9a360        10 months ago       43.8MB
+k8s.gcr.io/etcd                           3.4.3-0             303ce5db0e90        13 months ago       288MB
+kubernetesui/metrics-scraper              v1.0.2              3b08661dc379        13 months ago       40.1MB
+gcr.io/k8s-minikube/storage-provisioner   v1.8.1              4689081edb10        3 years ago         80.8MB
+
+# docker info
+
+Server:
+ Containers: 16
+  Running: 16
+  Paused: 0
+  Stopped: 0
+  CPUs: 2
+	 Total Memory: 1.942GiB
+	 Name: minikube
+	 
+C:\Users\rmallaya>kubectl get nodes
+NAME       STATUS   ROLES    AGE     VERSION
+minikube   Ready    master   3h14m   v1.18.3
+
+C:\Users\rmallaya>kubectl get namespaces
+NAME              STATUS   AGE
+default           Active   3h14m
+kube-node-lease   Active   3h14m
+kube-public       Active   3h14m
+kube-system       Active   3h14m
+
+$ kubectl get pods
+No resources found in default namespace.
+
+$ kubectl get pods -n kube-system
+NAME                               READY   STATUS    RESTARTS   AGE
+coredns-66bff467f8-djhnt           1/1     Running   0          3h15m
+coredns-66bff467f8-ng9fn           1/1     Running   0          3h15m
+etcd-minikube                      1/1     Running   0          3h15m
+kube-apiserver-minikube            1/1     Running   0          3h15m
+kube-controller-manager-minikube   1/1     Running   0          3h15m
+kube-proxy-krxxq                   1/1     Running   0          3h15m
+kube-scheduler-minikube            1/1     Running   0          3h15m
+storage-provisioner                1/1     Running   0          3h15m
+
+1/1 => no.of running containers / total containers
+
+$ kubectl get pods -n kube-system -o wide
+NAME                               READY   STATUS    RESTARTS   AGE     IP               NODE       NOMINATED NODE   READINESS GATES
+coredns-66bff467f8-djhnt           1/1     Running   0          3h17m   172.17.0.3       minikube   <none>           <none>
+coredns-66bff467f8-ng9fn           1/1     Running   0          3h17m   172.17.0.2       minikube   <none>           <none>
+etcd-minikube                      1/1     Running   0          3h17m   192.168.99.103   minikube   <none>           <none>
+kube-apiserver-minikube            1/1     Running   0          3h17m   192.168.99.103   minikube   <none>           <none>
+kube-controller-manager-minikube   1/1     Running   0          3h17m   192.168.99.103   minikube   <none>           <none>
+kube-proxy-krxxq                   1/1     Running   0          3h17m   192.168.99.103   minikube   <none>           <none>
+kube-scheduler-minikube            1/1     Running   0          3h17m   192.168.99.103   minikube   <none>           <none>
+storage-provisioner                1/1     Running   0          3h17m   192.168.99.103   minikube   <none>           <none>
+
+C:\Users\rmallaya>minikube ip
+192.168.99.103
+---------------------------------------------------------------------------------
+$ kubectl describe node minikube
+Name:               minikube
+Addresses:
+  InternalIP:  192.168.99.103
+  Hostname:    minikube
+Capacity:
+  cpu:                2
+  ephemeral-storage:  17784752Ki
+  hugepages-2Mi:      0
+  memory:             2036376Ki
+  pods:               110
+Allocatable:
+  cpu:                2
+  ephemeral-storage:  17784752Ki
+  hugepages-2Mi:      0
+  memory:             2036376Ki
+  pods:               110
+System Info:
+  Machine ID:                 7ef7ca23a2064c7d97e6fcc6078789bf
+  System UUID:                8e1a55f2-0c3d-e446-b31b-0f9958677d1c
+  Boot ID:                    8683c9d6-cd1b-434b-9402-8c41c87facae
+  Kernel Version:             4.19.107
+  OS Image:                   Buildroot 2019.02.10
+  Operating System:           linux
+  Architecture:               amd64
+  Container Runtime Version:  docker://19.3.8
+  Kubelet Version:            v1.18.3
+  Kube-Proxy Version:         v1.18.3
+Non-terminated Pods:          (8 in total)
+  Namespace                   Name                                CPU Requests  CPU Limits  Memory Requests  Memory Limits  AGE
+  ---------                   ----                                ------------  ----------  ---------------  -------------  ---
+  kube-system                 coredns-66bff467f8-djhnt            100m (5%)     0 (0%)      70Mi (3%)        170Mi (8%)     3h19m
+  kube-system                 coredns-66bff467f8-ng9fn            100m (5%)     0 (0%)      70Mi (3%)        170Mi (8%)     3h19m
+  kube-system                 etcd-minikube                       0 (0%)        0 (0%)      0 (0%)           0 (0%)         3h19m
+  kube-system                 kube-apiserver-minikube             250m (12%)    0 (0%)      0 (0%)           0 (0%)         3h19m
+  kube-system                 kube-controller-manager-minikube    200m (10%)    0 (0%)      0 (0%)           0 (0%)         3h19m
+  kube-system                 kube-proxy-krxxq                    0 (0%)        0 (0%)      0 (0%)           0 (0%)         3h19m
+  kube-system                 kube-scheduler-minikube             100m (5%)     0 (0%)      0 (0%)           0 (0%)         3h19m
+  kube-system                 storage-provisioner                 0 (0%)        0 (0%)      0 (0%)           0 (0%)         3h19m
+  
+----------------------------------------------------------------
+$ kubectl describe namespace kube-system
+Name:         kube-system
+Labels:       <none>
+Annotations:  <none>
+Status:       Active
+
+No resource quota.
+
+No LimitRange resource.
+
+----------------------
+
+$ kubectl get pods -n kube-system
+NAME                               READY   STATUS    RESTARTS   AGE
+coredns-66bff467f8-djhnt           1/1     Running   0          3h23m
+coredns-66bff467f8-ng9fn           1/1     Running   0          3h23m
+etcd-minikube                      1/1     Running   0          3h23m
+kube-apiserver-minikube            1/1     Running   0          3h23m
+kube-controller-manager-minikube   1/1     Running   0          3h23m
+kube-proxy-krxxq                   1/1     Running   0          3h23m
+kube-scheduler-minikube            1/1     Running   0          3h23m
+storage-provisioner                1/1     Running   0          3h23m
+----------------------------------
+
+$ kubectl describe  pod etcd-minikube -n kube-system
+Name:                 etcd-minikube
+Namespace:            kube-system
+Priority:             2000000000
+Priority Class Name:  system-cluster-critical
+Node:                 minikube/192.168.99.103
+Start Time:           Thu, 26 Nov 2020 13:17:50 +0530
+Labels:               component=etcd
+                      tier=control-plane
+Annotations:          kubeadm.kubernetes.io/etcd.advertise-client-urls: https://192.168.99.103:2379
+                      kubernetes.io/config.hash: c1463da8c0dcf5992807b26006308402
+                      kubernetes.io/config.mirror: c1463da8c0dcf5992807b26006308402
+                      kubernetes.io/config.seen: 2020-11-26T07:47:49.199760006Z
+                      kubernetes.io/config.source: file
+Status:               Running
+IP:                   192.168.99.103
+IPs:
+  IP:           192.168.99.103
+Controlled By:  Node/minikube
+Containers:
+  etcd:
+    Container ID:  docker://730313e8b17fad5059dde7a4ac5554bf444959ad262ee4fbee1cf033d9285156
+    Image:         k8s.gcr.io/etcd:3.4.3-0
+    Image ID:      docker-pullable://k8s.gcr.io/etcd@sha256:4afb99b4690b418ffc2ceb67e1a17376457e441c1f09ab55447f0aaf992fa646
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      etcd
+      --advertise-client-urls=https://192.168.99.103:2379
+      --cert-file=/var/lib/minikube/certs/etcd/server.crt
+      --client-cert-auth=true
+      --data-dir=/var/lib/minikube/etcd
+      --initial-advertise-peer-urls=https://192.168.99.103:2380
+      --initial-cluster=minikube=https://192.168.99.103:2380
+      --key-file=/var/lib/minikube/certs/etcd/server.key
+      --listen-client-urls=https://127.0.0.1:2379,https://192.168.99.103:2379
+      --listen-metrics-urls=http://127.0.0.1:2381
+      --listen-peer-urls=https://192.168.99.103:2380
+      --name=minikube
+      --peer-cert-file=/var/lib/minikube/certs/etcd/peer.crt
+      --peer-client-cert-auth=true
+      --peer-key-file=/var/lib/minikube/certs/etcd/peer.key
+      --peer-trusted-ca-file=/var/lib/minikube/certs/etcd/ca.crt
+      --snapshot-count=10000
+      --trusted-ca-file=/var/lib/minikube/certs/etcd/ca.crt
+
+------------------
+Priroty CLASS of POD for critical
+------------------------------
+Priority:             2000000000
+Priority Class Name:  system-cluster-critical
+
+------------------------
+
+MINIKUBE Config file
+
+vi C:\Users\rmallaya\.kube\config
+
+$ kubectl create namespace demo                                                                                                                                        
+namespace/demo created
+
+--------------
+
+$ kubectl get ns                                                                                                                                                       NAME              STATUS   AGE
+default           Active   3h33m
+demo              Active   46s
+kube-node-lease   Active   3h33m
+kube-public       Active   3h33m
+kube-system       Active   3h33m
+
+C:\Users\rmallaya>kubectl config set-context --current --namespace demo
+Context "minikube" modified.
+
+C:\Users\rmallaya>kubectl get pods
+No resources found in demo namespace.
+
+C:\Users\rmallaya>kubectl config view
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority: C:\Users\rmallaya\.minikube\ca.crt
+    server: https://192.168.99.103:8443
+  name: minikube
+contexts:
+- context:
+    cluster: minikube
+    namespace: demo
+    user: minikube
+  name: minikube
+current-context: minikube
+kind: Config
+preferences: {}
+users:
+- name: minikube
+  user:
+    client-certificate: C:\Users\rmallaya\.minikube\profiles\minikube\client.crt
+    client-key: C:\Users\rmallaya\.minikube\profiles\minikube\client.key
+	
+----------------------CREATE POD------------
+$ kubectl run apache-pod --image httpd
+pod/apache-pod created
+
+$ kubectl get pods -w
+NAME         READY   STATUS    RESTARTS   AGE
+apache-pod   1/1     Running   0          37s
+
+$ kubectl get pods -o wide
+NAME         READY   STATUS    RESTARTS   AGE    IP           NODE       NOMINATED NODE   READINESS GATES
+apache-pod   1/1     Running   0          109s   172.17.0.4   minikube   <none>           <none>
+
+$ kubectl describe pod apache-pod
+Name:         apache-pod
+Namespace:    demo
+Containers:
+  apache-pod:
+    Container ID:   docker://978aea20ecc4795379d0ccb6a028eb038297a29fda351a03cdd49578ac063f5b
+    Image:          httpd
+    Image ID:       docker-pullable://httpd@sha256:fddc534b7f6bb6197855be559244adb11907d569aae1283db8e6ce8bb8f6f456
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Thu, 26 Nov 2020 16:58:35 +0530
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-6nhd2 (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  default-token-6nhd2:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-6nhd2
+    Optional:    false
+QoS Class:       BestEffort
+Events:
+  Type    Reason     Age    From               Message
+  ----    ------     ----   ----               -------
+  Normal  Scheduled  3m10s  default-scheduler  Successfully assigned demo/apache-pod to minikube
+  Normal  Pulling    3m9s   kubelet, minikube  Pulling image "httpd"
+  Normal  Pulled     2m51s  kubelet, minikube  Successfully pulled image "httpd"
+  Normal  Created    2m51s  kubelet, minikube  Created container apache-pod
+  Normal  Started    2m51s  kubelet, minikube  Started container apache-pod
+  
+  
+-------------------------ACESSING POD ------------------
+
+$ kubectl exec -i -t apache-pod bash
+kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl exec [POD] -- [COMMAND] instead.
+root@apache-pod:/usr/local/apache2#
+root@apache-pod:/usr/local/apache2# ls /var/run/secrets/kubernetes.io/serviceaccount/
+ca.crt  namespace  token
+root@apache-pod:/usr/local/apache2# cat /var/run/secrets/kubernetes.io/serviceaccount/token
+eyJhbGciOiJSUzI1NiIsImtpZCI6IlhSQ1NWMTczVHZSV3VWZE1HUjkwMUxaeUxtVmIwSElYQTZUZkRxdWtZZWcifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZW1vIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImRlZmF1bHQtdG9rZW4tNm5oZDIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGVmYXVsdCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjFlNzI3MzVlLWNlNjEtNDcyNS04NTkyLTlkNDQ3Y2Q3YzczMiIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZW1vOmRlZmF1bHQifQ.q2w2EwzepGdedeEUMXrgbN7dZngakTv19QSIDJTPks_aOfgPYv6NEKqBDsHQbhrn62bjBLEodbZKIevH599c_ezuvedvUHyDFr4omMExE5d5Ft1OxMNCYbhpaZ1oSCKcdzWlqR0yCYfOZoVd7PJtyQaOJu_kiT6TBEOu-jPg40EzPHGrf8DhBVArEohTmAXI2TubkKpVSTf1XiqbGZIZqMgXOS__WBSj0AhWO95auFKcWVW2YVdVNiVNbDFkzSJCwtpenuOKga1o_-ZnZGB-oRrlFtIpb3nd6gIA0I3vEC1c7DHWUdcsMlsI6zxY1IvzHV4fjVA_9J9mrH86nK8Cdwroot@apache-pod:/usr/local/apache2
+
+---------------------------STOP MINIKUBE--------------------
+
+minikube stop
+
+-

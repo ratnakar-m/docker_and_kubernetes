@@ -1,0 +1,13 @@
+docker-machine create -d virtualbox test
+docker-machine ls
+docker-machine env test
+
+eval $("C:\Users\rmallaya\bin\docker-machine.exe" env test)
+ 
+docker-machine ls
+
+docker-machien stop test
+
+
+docker-machine rm test
+

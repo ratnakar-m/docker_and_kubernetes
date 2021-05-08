@@ -1,0 +1,19 @@
+Student Name	Mallayagari, Mr Ratnakar Rao
+Enrollment ID	9557192
+Company Name	GQ01 - CEGBU Development - India - ORCL India Dev Ctr - Hyd - 738705
+Email Address	-
+Class Id	96202061
+Date	27-NOV-20
+Location	Global,
+
+eKit Activation and Download Information
+eKit Activation and Download	Click Here to activate your order and download the eKit using the Activation key provided below.
+You can also copy and paste the following URL into your browser:
+https://login.oracle.com/oamfed/idp/initiatesso?providerid=sso4-seertechsolutions-com-opensaml-sp&returnurl=deeplinkactivatekey%3D6E4222E66B68FEF1
+After your order is activated, you will be able to download your eKit.
+Account Activation Information	Description: EDV Docker and Kubernetes EMP LVC
+Activation Key:
+Effective Date: 17-NOV-20
+Expiration Date: 16-MAY-21
+Order Number: INTERNAL
+Number of seats: 1

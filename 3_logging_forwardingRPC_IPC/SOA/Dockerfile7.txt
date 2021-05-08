@@ -1,0 +1,8 @@
+from node:14
+copy node.js /node.js
+run npm install -y express body-parser mysql
+expose 9000
+cmd node /node.js
+#docker build -t newsoanode -f Dockerfile7 .
+#docker run -d --name testsoanode -p 9500:9000 --net=dbnetwork newsoanode
+

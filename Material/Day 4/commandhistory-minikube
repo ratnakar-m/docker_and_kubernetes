@@ -1,0 +1,75 @@
+    1  exit
+    2  exit
+    3  docker-machine ls
+    4  cd ~
+    5  pwd
+    6  cd .docker
+    7  ls
+    8  cd machine/
+    9  cd machines
+   10  cd default
+   11  pwd
+   12  ls
+   13  vi config.json
+   14  cd ~
+   15  notepad config.json
+   16  clear
+   17  docker-machine ssh default
+   18  clear
+   19  exit
+   20  docker-machine ssh default
+   21  clear
+   22  wzit
+   23  exit
+   24  docker-machine ls
+   25  docker-machine env default
+   26  docker-machine ls
+   27  docker images
+   28  docker run --rm ping:1
+   29  pwd
+   30  docker run -it --rm ubuntu bash
+   31  docker ps
+   32  docker run --rm ping:1 $(docker inspect -f "{{.NetworkSettings.IPAddress}}
+   33  " TestUbuntu)
+   34  docker network ls
+   35  docker run --rm ping:1 $(docker-machine ip default)
+   36  docker run --rm ping:1 www.ndtv.com
+   37  docker run --rm ping:1 hub.docker.com
+   38  exit
+   39  minikube version
+   40  kubectl version --client
+   41  minikube start --cpus=2 --memory=2048 --vm-driver=virtualbox
+   42  minikube status
+   43  kubectl cluster-info
+   44  kubectl api-resources
+   45  kubectl get nodes
+   46  kubectl get nodes -o wide
+   47  kubectl get namespaces
+   48  kubectl get pods 
+   49  kubectl get pods  -n kube-system
+   50  kubectl get pods  -n kube-system -o wide
+   51  minikube ip
+   52  kubectl describe node minikube
+   53  kubectl describe namespace kube-system
+   54  kubectl get pods -n kube-system
+   55  kubectl describe pod etcd-minikube -n kube-system
+   56  cd ~/.kube
+   57  pwd
+   58  ls
+   59  cat config
+   60  kubectl get pods
+   61  kubectl create namespace demo
+   62  kubectl get ns
+   63  kubectl get pods -n demo
+   64  kubectl get pods
+   65  kubectl config set-context --current --namespace demo
+   66  kubectl get pods
+   67  cat config
+   68  kubectl config view
+   69  kubectl run apache-pod --image=httpd
+   70  kubectl get pods -w
+   71  kubectl get pods
+   72  kubectl get pods -o wide
+   73  kubectl describe pod apache-pod
+   74  history
+   75  history > commandhistory-minikube

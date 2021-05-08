@@ -1,0 +1,9 @@
+# Dockerfile for Custom database
+
+from mysql:5.7
+label maintainer "ratnakar@oracle.com"
+env MYSQL_ROOT_PASSWORD=admin
+copy createdb.sql /docker-entrypoint-initdb.d/createdb.sql
+
+# docker build -t mysqldb:2 -f Dockerfile4 .
+# docker run -d --name testdatabase mysqldb:2

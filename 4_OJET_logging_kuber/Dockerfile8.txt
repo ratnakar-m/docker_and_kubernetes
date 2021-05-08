@@ -1,0 +1,14 @@
+# ojet implementation
+from node:14
+label maintainer ui-support@oracle.com
+run npm install -g @oracle/ojet-cli
+run ojet create demo --template=navbar
+expose 8000
+workdir /demo
+cmd ojet serve
+
+# docker build -t newojet -f Dockerfile8 .
+# docker run -d --name testsoaui -p 8501:8000 newojet
+# docker logs testsoaui
+# curl http://192.168.99.100:8501/
+# docker stats testsoaui

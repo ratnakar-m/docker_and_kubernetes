@@ -1,0 +1,21 @@
+docker container run --publish 80:80 --name nginxcont --detach nginx
+docker container run --publish 8080:80 --name httpdcont --detach httpd
+docker container run --publish 3306:3306 --name mysqlcont --detach --env MYSQL_RANDOM_ROOT_PASSWORD=yes mysql
+
+#Across containers
+docker container ps
+docker container stats
+
+#In a container
+
+	#looking container from outside (peeping)
+	docker container inspect mysqlcont
+	docker container top mysqlcont
+	
+	#Stepping into a container shell of already running container
+	docker container exec -it <contname> bash
+	
+
+
+
+

@@ -1,0 +1,210 @@
+
+Admin:
+
+local repo path: /var/lib/docker/image/overlay2
+resource mgmt path: /sys/fs/cgroup
+
+cat /sys/fs/cgroup/cpu/docker/cpu.shares
+1024
+
+---------------
+
+Docker user:
+
+docker ps //only running containers
+docker ps -a //all containers
+docker start ApacheServer
+docker top ApacheServer
+
+docker@default:~$ docker top ApacheServer
+UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
+root                5350                5330                0                   04:43               ?                   00:00:00            httpd -DFOREGROUND
+1                   5383                5350                0                   04:43               ?                   00:00:00            httpd -DFOREGROUND
+1                   5384                5350                0                   04:43               ?                   00:00:00            httpd -DFOREGROUND
+1                   5385                5350                0                   04:43               ?                   00:00:00            httpd -DFOREGROUND
+
+docker@default:~$ ps ax | grep 5330
+ 5330 ?        Sl     0:00 containerd-shim -namespace moby -workdir /mnt/sda1/var/lib/docker/containerd/daemon/io.containerd.runtime.v1.linux/moby/eda28e8f05d7cef11b9ff277906255b2ebd382bd822f05631f19ade3a6449463 -address /var/run/docker/containerd/containerd.sock -containerd-binary /usr/local/bin/containerd -runtime-root /var/run/docker/runtime-runc
+ 5510 pts/2    S+     0:00 grep 5330
+
+docker exec ApacheServer cat /usr/local/apache2/htdocs/index.html
+docker exec ApacheServer ls /usr/local/apache2
+docker exec ApacheServer bash
+docker exec -it ApacheServer bash
+root@eda28e8f05d7:/usr/local/apache2#exit
+
+
+docker create --name TestOL oraclelinux:8
+docker start TestOL
+dde6d7eb009e        oraclelinux:8       "/bin/bash"          14 seconds ago      Exited (0) 1 second ago                       TestOL
+
+docker rm TestOL
+
+docker create --name TestOL -it oraclelinux:8
+docker start TestOL
+docker ps -a
+docker top TestOL  
+
+docker exec -it TestOL bash //shell with in a shell
+
+[root@65f425a6866b /]# ps ax
+  PID TTY      STAT   TIME COMMAND
+    1 pts/0    Ss+    0:00 /bin/bash
+   16 pts/1    Ss     0:00 bash     //child shell
+   31 pts/1    R+     0:00 ps ax
+[root@65f425a6866b /]# exit
+
+CAN WE ACCESS parent bash process directly instead of using child process using exec (pid 1)
+
+docker attach TestOL
+
+[root@65f425a6866b /]# ps ax
+  PID TTY      STAT   TIME COMMAND
+    1 pts/0    Ss     0:00 /bin/bash
+   38 pts/0    R+     0:00 ps ax
+   
+[root@65f425a6866b /]# exit
+exit from the container :(
+
+is there a method to come out of container with out exiting the container process
+
+docker attach --detach-keys="ctrl-o" TestOL
+
+[root@65f425a6866b /]# ctrl-o
+
+docker ps -a
+
+Automations in docker:
+
+start and stop containers:
+	docker ps -q //ids of running container
+	docker stop $(docker ps -q) //$() expr alternative in docker
+	docker start $(docker ps -aq)
+	
+extract data from json: {{ }} //extra polation operator
+	{{.PropertyName}}
+	{{.ParentProperty.ChildProperty}}
+	
+name, status, ip of container
+
+docker inspect -f "{{.Name}} \
+{{.Platform}} \
+{{.State.Status}} \
+{{.NetworkSettings.IPAddress}}" TestOL
+
+docker inspect -f "{{.Name}} \
+{{.Platform}} \
+{{.State.Status}} \
+{{.NetworkSettings.IPAddress}}" $(docker ps -aq)
+
+docker inspect -f " {{.RepoTags}} \
+{{.Os}} \
+{{.Architecture}}" $(docker images -q)
+
+ [httpd:latest] linux amd64
+ [oraclelinux:8] linux amd64
+ 
+Testing an image:
+---------------
+	-to create service for that image and verify
+
+Pull Image -> 
+Create Container -> 
+Start the container(CMD) -> 
+Runtime props assigned(IP, etc.) -> 
+attach [-d OR -it]
+
+The above is done by 'docker run '
+
+
+admin windows:
+cd ~
+docker events
+
+docker window:
+docker run -it --name ubuntu ubuntu
+
+--------events
+2020-11-24T06:05:44.600532611Z image pull ubuntu:latest (name=ubuntu)
+2020-11-24T06:05:44.738600681Z container create a489c0b65a5d13c3c34b74ede8a10edd6e79dbebe0f91fc34f854b1344412ae2 (image=ubuntu, name=ubuntu)
+2020-11-24T06:05:44.740350620Z container attach a489c0b65a5d13c3c34b74ede8a10edd6e79dbebe0f91fc34f854b1344412ae2 (image=ubuntu, name=ubuntu)
+2020-11-24T06:05:44.758485354Z network connect 25c3f94da6e52eb5d37eb1ae9e9bebd96ad119320bc00257890c7eb864469f78 (container=a489c0b65a5d13c3c34b74ede8a10edd6e79dbebe0f91fc34f854b1344412ae2, name=bridge, type=bridge)
+2020-11-24T06:05:44.967637498Z container start a489c0b65a5d13c3c34b74ede8a10edd6e79dbebe0f91fc34f854b1344412ae2 (image=ubuntu, name=ubuntu)
+2020-11-24T06:05:44.969691158Z container resize a489c0b65a5d13c3c34b74ede8a10edd6e79dbebe0f91fc34f854b1344412ae2 (height=38, image=ubuntu, name=ubuntu, width=165)
+-----------------
+
+docker attach $(docker start ubuntu)
+root@a489c0b65a5d:/# apt-get -y update
+root@a489c0b65a5d:/# apt-get -y install vim
+root@a489c0b65a5d:/# mkdir test
+root@a489c0b65a5d:/# vi testfile //This is a test content //OR touch it
+root@a489c0b65a5d:/# exit
+
+docker exec $(docker start ubuntu) cat /test/testfile
+
+docker commit -- Convert a container to image /to worry about number of layers
+
+docker commit ubuntu ubuntu-cust:1  //file system gets added to the new image but not the runtime props like volumne, ip etc.
+
+docker@default:~$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+ubuntu-cust         1                   91e9285ee2c8        15 seconds ago      85.6MB
+httpd               latest              0a30f4c29d25        5 days ago          138MB
+oraclelinux         8                   7535676bcf14        7 days ago          429MB
+ubuntu              latest              d70eaf7277ea        4 weeks ago         72.9MB
+
+docker history ubuntu-cust:1
+IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
+91e9285ee2c8        9 minutes ago       /bin/bash                                       12.7MB
+d70eaf7277ea        4 weeks ago         /bin/sh -c #(nop)  CMD ["/bin/bash"]            0B
+<missing>           4 weeks ago         /bin/sh -c mkdir -p /run/systemd && echo 'do…   7B
+<missing>           4 weeks ago         /bin/sh -c [ -z "$(apt-get indextargets)" ]     0B
+<missing>           4 weeks ago         /bin/sh -c set -xe   && echo '#!/bin/sh' > /…   811B
+<missing>           4 weeks ago         /bin/sh -c #(nop) ADD file:435d9776fdd3a1834…   72.9MB
+
+docker run --rm -it ubuntu-cust:1
+
+problem with layers mgmt when image is created using docker commit as all the operations done on top of parent image will be created in a single layer.
+
+docker pull scratch //can only be derived
+docker pull scratch
+
+we would want to use docker commit but with avoid the above shortcomings -> Dockerfile (internally used docker commit for every layer)
+https://github.com/dhanan77/RESTAPI22.05
+https://app.wercker.com/
+
+
+ docker exec ubuntu ls /test
+ 
+ docker cp ubuntu:test/testfile . //copying from continer to local 
+ 
+docker@default:~/Dockerfiles$ docker system df
+TYPE                TOTAL               ACTIVE              SIZE                RECLAIMABLE
+Images              4                   3                   651.7MB             85.55MB (13%)
+Containers          3                   1                   12.67MB             321B (0%)
+Local Volumes       0                   0                   0B                  0B
+Build Cache         0                   0                   0B                  0B
+
+docker build -t <image-name-in-lower-case> -f <docker-file-name> [file-cache]
+
+docker build -t ubuntu-cust:2 -f Dockerfile .  [--no-cache]
+docker history ubuntu-cust:2
+docker inspect ubuntu-cust:2
+
+
+docker run --rm -it ubuntu-cut:2
+ls test
+env
+
+
+
+
+
+
+
+
+
+
+
+
+ 

@@ -1,0 +1,55 @@
+>> kubectl describe svc random-generator
+
+Name:                     random-generator
+Namespace:                default
+Labels:                   <none>
+Annotations:              <none>
+Selector:                 app=random-generator
+Type:                     NodePort
+IP:                       10.111.218.78
+Port:                     <unset>  8080/TCP
+TargetPort:               8080/TCP
+NodePort:                 <unset>  31286/TCP
+Endpoints:                172.17.0.12:8080,172.17.0.13:8080,172.17.0.14:8080
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:                   <none>
+
+>> kubectl cluster-info
+Kubernetes master is running at https://192.168.99.103:8443
+KubeDNS is running at https://192.168.99.103:8443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+>> minikube service random-generator
+
+|-----------|------------------|-------------|-----------------------------|
+| NAMESPACE |       NAME       | TARGET PORT |             URL             |
+|-----------|------------------|-------------|-----------------------------|
+| default   | random-generator |        8080 | http://192.168.99.103:31286 |
+|-----------|------------------|-------------|-----------------------------|
+* Opening service default/random-generator in default browser...
+
+>>
+curl --silent http://192.168.99.103:31286/
+{"random":-7287330,"id":"d386b07c-0b8a-4e09-b561-ea865bdd6358"}
+
+kubectl delete ingree random-generator
+kubectl delete svc random-generator
+kubectl delete deployment random-generator
+
+>>kubectl create -f pod.yml
+
+>> kubectl get pods
+>> kubectl get pods -o wide
+>> kubectl get services
+>> kubectl expose pod random-generator --type=NodePort --port=80
+service/random-generator exposed
+>> kubectl get services
+>> curl --silent http://192.168.99.103:31341
+{curl --silent http://192.168.99.103:31341}
+>> kubectl delete service random-generator
+>>   kubectl expose pod random-generator --type=NodePort --port=8080 --target-port=8080
+service/random-generator exposed
+>> kubectl describe service random-generator
+   92  minikube service apache-pod -n demo
+   93  minikube ip
+   94  curl --silent http://192.168.99.101:31248

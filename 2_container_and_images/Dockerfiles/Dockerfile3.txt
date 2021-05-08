@@ -1,0 +1,6 @@
+# Ping Simulation with Entrypoint
+FROM ubuntu:trusty
+ENTRYPOINT ["/bin/ping","-c3"]
+CMD ["localhost"]
+
+#docker build -t ping:1 -f Dockerfile3 .

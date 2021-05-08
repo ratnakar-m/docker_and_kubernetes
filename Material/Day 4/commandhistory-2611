@@ -1,0 +1,353 @@
+    1  exit
+    2  exit
+    3  sudo -i
+    4  exit
+    5  ps ax | grep dockerd
+    6  clear
+    7  docker info
+    8  clear
+    9  docker info
+   10  docker info
+   11  docker images
+   12  docker search httpd
+   13  docker pull httpd
+   14  docker images
+   15  docker inspect 0a3
+   16  docker pull oraclelinux
+   17  docker pull oraclelinux:8
+   18  docker images
+   19  docker inspect 753
+   20  docker pull httpd
+   21  docker inspect httpd
+   22  docker system df
+   23  docker create --name ApacheServer httpd
+   24  docker ps -a
+   25  docker start ApacheServer
+   26  docker ps -a
+   27  docker stats ApacheServer
+   28  docker inspect ApacheServer
+   29  clear
+   30  docker stop ApacheServer
+   31  docker ps -a
+   32  docker stats
+   33  history > /c/Users/dhana/command-history2311
+   34  exit
+   35  sudo -i
+   36  exit
+   37  ps ax | grep dockerd
+   38  docker ps -a
+   39  ls /var/lib/docker
+   40  docker ps -a
+   41  docker start ApacheServer
+   42  docker top ApacheServer
+   43  ps ax | grep 10848
+   44  docker ps 
+   45  docker ps -a
+   46  docker inspect ApacheServer
+   47  docker inspect oraclelinux:8
+   48  docker inspect httpd
+   49  clear
+   50  docker ps
+   51  docker exec ApacheServer cat /usr/local/apache2/htdocs/index.html
+   52  docker exec ApacheServer ls /usr/local/apache2
+   53  docker exec ApacheServer bash
+   54  docker exec -i -t ApacheServer bash
+   55  docker ps 
+   56  docker create --name TestOL oraclelinux:8
+   57  docker start TestOL
+   58  docker ps -a
+   59  docker rm TestOL
+   60  docker create --name TestOL -i -t oraclelinux:8
+   61  docker start TestOL
+   62  docker ps -a
+   63  docker top TestOL
+   64  docker exec -i -t TestOL bash
+   65  docker ps
+   66  docker attach TestOL
+   67  docker ps -a
+   68  docker attach --detach-keys="ctrl-o" TestOL
+   69  docker start TestOL
+   70  docker attach --detach-keys="ctrl-o" TestOL
+   71  docker ps -a
+   72  docker ps -a
+   73  echo date
+   74  echo `date`
+   75  docker ps -a -q
+   76  docker ps -q
+   77  docker stop $(docker ps -q)
+   78  docker ps -a
+   79  docker ps -a
+   80  docker ps -q
+   81  docker ps -a -q
+   82  docker start $(docker ps -a -q)
+   83  docker inspect TestOL
+   84  docker inspect -f "{{.Name}} \
+   85  {{.Platform}} \
+   86  {{.State.Status}} \
+   87  {{.NetworkSettings.IPAddress}}" TestOL
+   88  docker inspect -f "{{.Name}} \
+   89  {{.Platform}} \
+   90  {{.State.Status}} \
+   91  {{.NetworkSettings.IPAddress}}" $(docker ps -a -q)
+   92  docker images
+   93  docker inspect httpd
+   94  docker inspect -f "{{.RepoTags}} \
+   95  {{.Os}} {{.Architecture}}" $(docker images -q)
+   96  clear
+   97  docker run -i -t --name TestUbuntu ubuntu
+   98  docker ps -a
+   99  docker attach $(docker start TestUbuntu)
+  100  docker ps -a
+  101  docker exec $(docker start TestUbuntu) cat /test/testfile
+  102  docker commit TestUbuntu newubuntu:1
+  103  docker images
+  104  docker history newubuntu:1
+  105  docker inspect ubuntu
+  106  docker inspect newubuntu:1
+  107  docker history newubuntu:1
+  108  docker inspect newubuntu:1
+  109  clear
+  110  docker images
+  111  docker run -i -t --rm newubuntu:1
+  112  docker ps -a
+  113  docker pull scratch
+  114  mkdir Dockerfiles
+  115  cd Dockerfiles/
+  116  pwd
+  117  clear
+  118  docker ps
+  119  docker exec TestUbuntu ls /test
+  120  docker cp TestUbuntu:/test/testfile .
+  121  ls
+  122  cat testfile
+  123  vi Dockerfile
+  124  ls
+  125  docker system df
+  126  docker build -t newubuntu:2 -f Dockerfile .
+  127  docker images
+  128  docker history newubuntu:2
+  129  docker inspect newubuntu:2
+  130  docker run --rm -i -t newubuntu:2
+  131  vi Sample.sh
+  132  sh Sample.sh
+  133  sh Sample.sh uuu
+  134  sh Sample.sh testfile
+  135  clear
+  136  ls
+  137  vi Dockerfile1
+  138  ls
+  139  docker build -t newubuntu:3 -f Dockerfile1 .
+  140  docker images
+  141  docker inspect newubuntu:3
+  142  docker run --rm newubuntu:3
+  143  docker run --rm newubuntu:3 /etc/hosts
+  144  docker run --rm newubuntu:3 sh /code/Sample.sh /etc/hosts
+  145  docker run --rm -i -t newubuntu:3 bash
+  146  vi Dockerfile2
+  147  vi Dockerfile1
+  148  cat Dockerfile1
+  149  docker build -t newubuntu:4 -f Dockerfile1 .
+  150  docker run --rm newubuntu:4
+  151  docker run --rm newubuntu:4 /etc/hosts
+  152  docker run --rm newubuntu:4 /etc/hosts1111
+  153  docker run --rm -i -t newubuntu:4 bash
+  154  cat Dockerfile1
+  155  docker pull mysql:5.7
+  156  docker ps -a
+  157  docker exec TestUbuntu ping
+  158  docker exec -i -t TestUbuntu bash
+  159  ls
+  160  clear
+  161  vi Dockerfile2
+  162  ls
+  163  docker build -t ping:1 -f Dockerfile2 .
+  164  docker-machine
+  165  docker info
+  166  ps ax | grep dockerd
+  167  vi createdb.sql
+  168  clear
+  169  docker images
+  170  docker volume ls
+  171  docker run -d --name mysqldb mysql:5.7
+  172  docker volume ls
+  173  docker inspect 62e64905c8e6845cb739747f4c86e9570a39e82ec27a0864434b4ea5622f4a4b
+  174  docker ps -a
+  175  docker logs mysqldb
+  176  docker rm mysqldb
+  177  docker volume ls
+  178  docker volume prune
+  179  docker volume ls
+  180  ls
+  181  vi Dockerfile3
+  182  docker build -t newmysql:1 -f Dockerfile3 .
+  183  docker run -d --name testdatabase newmysql:1
+  184  docker volume ls
+  185  docker inspect 3ed61df492a59912c6c500f7293e9164a672e694f08d100d09274002031d29dc
+  186  docker ps 
+  187  docker system df
+  188  docker logs testdatabase
+  189  docker stats
+  190  docker inspect testdatabase
+  191  history
+  192  history > /c/Users/91837/commandhistory-2411
+  193  exit
+  194  sudo -i
+  195  exit
+  196  history
+  197  history > /c/Users/dhana/commandhistory-2411
+  198  exit
+  199  ps ax | grep dockerd
+  200  docker ps -a
+  201  docker logs testdatabase
+  202  docker exec -i -t testdatabase bash
+  203  docker ps -a
+  204  docker start TestUbuntu
+  205  docker logs TestUbuntu
+  206  docker exec -i -t TestUbuntu bash
+  207  docker logs TestUbuntu
+  208  docker run -i -t --name LogsUbuntu --detach-keys="ctrl-y" ubuntu
+  209  docker exec -i -t LogsUbuntu bash
+  210  docker logs LogsUbuntu
+  211  docker inspect -f "{{.LogPath}}" LogsUbuntu
+  212  docker info
+  213  docker diff LogsUbuntu
+  214  docker events --since=30m
+  215  docker images
+  216  docker info
+  217  clear
+  218  docker login
+  219  cat /home/docker/.docker/config.json
+  220  docker images
+  221  docker tag newubuntu:4 dnarasim248/oracleubuntu:1
+  222  docker images
+  223  docker push dnarasim248/oracleubuntu:1
+  224  docker inspect httpd
+  225  clear
+  226  docker run -d --name webserver -p 8000:80 httpd
+  227  docker inspect -f "{{.NetworkSettings.IPAddress}}" webserver
+  228  curl 172.17.0.7:80
+  229  cat /etc/hosts
+  230  curl localhost:8000
+  231  curl 192.168.99.100:8000
+  232  docker inspect webserver
+  233  docker port webserver
+  234  docker logs webserver
+  235  docker inspect bridge
+  236  docker stop webserver
+  237  docker port webserver
+  238  docker start webserver
+  239  docker port webserver
+  240  docker run -d --name dynwebserver -P httpd
+  241  docker port dynwebserver
+  242  curl 192.168.99.100:32768
+  243  docker stop dynwebserver
+  244  docker start dynwebserver
+  245  docker port dynwebserver
+  246  docker pull node:14
+  247  cd Dockerfiles
+  248  ls
+  249  vi data.json
+  250  vi node.js
+  251  ls
+  252  vi Dockerfile4
+  253  docker build -t newnode -f Dockerfile4 .
+  254  docker inspect newnode
+  255  history
+  256  docker image
+  257  docker images
+  258  docker run -d --name testnode -p 9001:9000 newnode
+  259  docker ps -a
+  260  docker port testnode
+  261  curl 192.168.99.100:9001/listUsers
+  262  docker images
+  263  docker stats
+  264  docker update --cpu-shares=10 --memory=100M --memory-swap=150M webserver
+  265  docker stats
+  266  docker exec -i -t webserver bash
+  267  history
+  268  docker inspect bridge
+  269  mkdir soa
+  270  cd soa
+  271  clear
+  272  docker network create dbnetwork --subnet 172.100.0.0/16
+  273  docker network ls
+  274  docker inspect dbnetwork
+  275  vi database.sql
+  276  vi insertsql.sql
+  277  cat insertsql.sql 
+  278  cat database.sql 
+  279  ls
+  280  vi Dockerfile5
+  281  ls
+  282  docker build -t newsoadb -f Dockerfile5 .
+  283  docker run -d --name testsoadb --net=dbnetwork --ip=172.100.100.100 newsoadb
+  284  docker inspect dbnetwork
+  285  docker logs testsoadb
+  286  docker exec -i -t testsoadb bash
+  287  vi node.js
+  288  vi Dockerfile6
+  289  vi Dockerfile6
+  290  cat Dockerfile6
+  291  docker build -t newsoanode -f Dockerfile6 .
+  292  docker inspect newsoanode
+  293  docker run -d --name testsoanode -p 9500:9000 -net=dbnetwork newsoanode
+  294  docker run -d --name testsoanode -p 9500:9000 --net=dbnetwork newsoanode
+  295  docker port testsoanode
+  296  docker logs testsonode
+  297  docker logs testsoanode
+  298  docker inspect dbnetwork
+  299  curl 192.168.99.100:9500/listEmployees
+  300  docker run -i -t --name testservice ubuntu:trusty
+  301  docker run --rm ping:1 172.100.100.100
+  302  docker run --rm --net=dbnetwork ping:1 172.100.100.100
+  303  history
+  304  cp Dockerfile* ..
+  305  cd ..
+  306  cp -r . /c/Users/dhana/Dockerfiles111
+  307  sudo -i
+  308  docker ps -a
+  309  clear
+  310  docker run -d --name logs10    --log-driver json-file     --log-opt max-size=1k     --log-opt max-file=10     --log-opt mode=non-blocking     alpine /bin/sh -c "while true; do sleep 2; df -h; done"
+  311  docker inspect logs10
+  312  docker logs logs10
+  313  docker inspect -f "{{.LogPath}}" logs10
+  314  docker ps -a
+  315  docker logs testsoanode
+  316  docker logs logs10
+  317  docker logs testsoadb
+  318  cd Dockerfiles
+  319  ls
+  320  vi Dockerfile7
+  321  dokcer build -t newojet -f Dockerfile7 .
+  322  docker build -t newojet -f Dockerfile7 .
+  323  docker images
+  324  docker inspect newojet
+  325  docker run -d --name testojet -p 8501:8000 newojet
+  326  docker port testojet
+  327  docker logs testojet
+  328  cat > incidents.html
+  329  docker exec -i -t testojet bash
+  330  docker cp incidents.html testojet:/demo/src/js/views/incidents.html
+  331  docker stats
+  332  docker inspect logs10
+  333  docker run -i -t --name testalpine --restart=always alpine
+  334  docker ps -a | grep testalpine
+  335  docker inspect -f "{{.RestartCount}}" testalpine
+  336  docker attach testalpine
+  337  docker inspect -f "{{.RestartCount}}" testalpine
+  338  docker images
+  339  clear
+  340  docker run -d --name checkdb -e MYSQL_ROOT_PASSWORD=tiger newmysql:1
+  341  docker exec -i -t checkdb bash
+  342  cat > database.env
+  343  docker run -d --name checkdb1 --env-file=database.env newmysql:1
+  344  docker exec -i -t checkdb1 bash
+  345  docker volume ls
+  346  docker run -i -t  --name alpinevolume -v 0e2145fbbffd11796dc6c6918661de39ac8889650424b11394818155b1b21a21:/apps -w /apps alpine
+  347  docker run -i -t --restart=always -e VERSION=1 ubuntu
+  348  docker ps -a | grep ubuntu
+  349  docker exec -e VERSION=10 791 bash
+  350  docker exec -i -t -e VERSION=10 791 bash
+  351  docker exec 791 env
+  352  docker attach 791
+  353  history > /c/Users/dhana/commandhistory-2611

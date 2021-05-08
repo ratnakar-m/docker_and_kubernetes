@@ -1,0 +1,215 @@
+ docker build -t ubuntu-cust:2 -f Dockerfile .
+ 
+ docker history ubuntu-cust:2
+IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
+5556c8e01011        35 seconds ago      /bin/sh -c #(nop)  ENV version=1                0B
+239b0e5dc870        36 seconds ago      /bin/sh -c apt-get -y install vim               60MB
+0ebf7304ba34        20 minutes ago      /bin/sh -c apt-get -y update                    34.4MB
+b68801e7ac21        33 minutes ago      /bin/sh -c #(nop) COPY file:5a803dc8d5b2ae95…   21B
+a1f64e2e6705        33 minutes ago      /bin/sh -c mkdir /test                          0B
+de776bccb5c8        33 minutes ago      /bin/sh -c #(nop)  LABEL MAINTAINER=ratnakar…   0B
+56def654ec22        8 weeks ago         /bin/sh -c #(nop)  CMD ["/bin/bash"]            0B
+<missing>           8 weeks ago         /bin/sh -c mkdir -p /run/systemd && echo 'do…   7B
+<missing>           8 weeks ago         /bin/sh -c [ -z "$(apt-get indextargets)" ]     0B
+<missing>           8 weeks ago         /bin/sh -c set -xe   && echo '#!/bin/sh' > /…   745B
+<missing>           8 weeks ago         /bin/sh -c #(nop) ADD file:4974bb5483c392fb5…   63.2MB
+
+-------------------------------------------------------------------------------------
+ 
+> docker build -t ubuntu-cust:3 -f Dockerfile1 .
+
+Sending build context to Docker daemon   5.12kB
+Step 1/6 : FROM ubuntu
+ ---> d70eaf7277ea
+Step 2/6 : LABEL MAINTAINER ratnakar@oracle.com
+ ---> Running in 4d0acc73db49
+Removing intermediate container 4d0acc73db49
+ ---> 753b310b63ac
+Step 3/6 : COPY sample.sh /code/sample.sh
+ ---> 188098431b7b
+Step 4/6 : COPY testfile /code/testfile
+ ---> 82f43de4071b
+Step 5/6 : RUN chmod +x /code/sample.sh
+ ---> Running in b59c42065b95
+Removing intermediate container b59c42065b95
+ ---> 958ff769f2da
+Step 6/6 : CMD sh /code/sample.sh /code/testfile
+ ---> Running in 5f26c184d3c9
+Removing intermediate container 5f26c184d3c9
+ ---> 3d82b5a986b2
+Successfully built 3d82b5a986b2
+Successfully tagged ubuntu-cust:3
+
+
+docker run --rm ubuntu-cust:3 //works
+
+
+docker run --rm ubuntu-cust:3 /etc/hosts //does not work.docker thinks '/etc/hosts' is the command
+
+docker run --rm ubuntu-cust:3 sh /code/sample.sh /code/testfile //works
+
+docker run --rm ubuntu:3 bash //security risk as user can connect into container.
+ 
+-----------------------------------------
+> docker build -t ubuntu:4 -f Dockerfile2 .
+
+docker run --rm ubuntu:4
+
+docker run --rm ubuntu:4 /etc/hosts
+
+ docker run --rm ubuntu:4 bash
+ 
+-------------------------------------
+read-only props of container after it is created
+ID
+IMAGE
+PORT
+VOLUME (cannot add a new volume once created)
+
+can change IP
+
+-------------------------------
+docker build -t ping:1 -f Dockerfile3 .
+
+-----------------------------------
+rmallaya@RMALLAYA-IN MINGW64 /c/Program Files/Docker Toolbox
+$ docker-machine ls
+NAME      ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER      ERRORS
+default   *        virtualbox   Running   tcp://192.168.99.100:2376           v19.03.12
+myvm1     -        hyperv       Error                                         Unknown     Failed to find the VM status
+
+------------------------------------
+
+$ docker-machine env default
+export DOCKER_TLS_VERIFY="1"
+export DOCKER_HOST="tcp://192.168.99.100:2376"
+export DOCKER_CERT_PATH="C:\Users\rmallaya\.docker\machine\machines\default"
+export DOCKER_MACHINE_NAME="default"
+export COMPOSE_CONVERT_WINDOWS_PATHS="true"
+# Run this command to configure your shell:
+# eval $("C:\Users\rmallaya\bin\docker-machine.exe" env default)
+
+-----------------------------------
+docker-machine env default
+eval $(docker-machine env default)
+
+docker-machine start default
+docker-machine stop default
+----------------------------------------
+
+rmallaya@RMALLAYA-IN MINGW64 /c/Program Files/Docker Toolbox
+$ docker run --rm ping:1
+PING localhost (127.0.0.1) 56(84) bytes of data.
+64 bytes from localhost (127.0.0.1): icmp_seq=1 ttl=64 time=0.017 ms
+64 bytes from localhost (127.0.0.1): icmp_seq=2 ttl=64 time=0.032 ms
+64 bytes from localhost (127.0.0.1): icmp_seq=3 ttl=64 time=0.024 ms
+
+--- localhost ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2067ms
+rtt min/avg/max/mdev = 0.017/0.024/0.032/0.007 ms
+
+-----------------------------------------
+
+C:\Users\rmallaya>docker run --rm -it ubuntu bash
+root@19ec2fd0550a:/#
+
+> docker run --rm ping:1 $(docker inspect -f "{{.NetworkSettings.IPAddress}}"  ubuntu) //container to container
+
+> docker run --rm ping:1 $(docker-machine ip default) //container to VM (HOST)
+
+> docker run --rm ping:1 www.ndtv.com
+
+PING www.ndtv.com (118.214.97.34) 56(84) bytes of data.
+64 bytes from a118-214-97-34.deploy.static.akamaitechnologies.com (118.214.97.34): icmp_seq=1 ttl=54 time=27.4 ms
+64 bytes from a118-214-97-34.deploy.static.akamaitechnologies.com (118.214.97.34): icmp_seq=2 ttl=54 time=17.2 ms
+64 bytes from a118-214-97-34.deploy.static.akamaitechnologies.com (118.214.97.34): icmp_seq=3 ttl=54 time=17.3 ms
+
+--- www.ndtv.com ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2009ms
+rtt min/avg/max/mdev = 17.267/20.712/27.472/4.780 ms
+
+> $ docker run --rm ping:1 hub.docker.com
+PING us-east-1-elbdefau-1nlhaqqbnj2z8-140214243.us-east-1.elb.amazonaws.com (52.45.24.195) 56(84) bytes of data.
+
+--- us-east-1-elbdefau-1nlhaqqbnj2z8-140214243.us-east-1.elb.amazonaws.com ping statistics ---
+3 packets transmitted, 0 received, 100% packet loss, time 2059ms
+
+
+-----------------------------------------
+docker info
+
+Volume -> local (volume within host) /var/lib/docker --data-root of dockerd
+		NFS (REMOTE)
+		BUKCET (Cloud)
+		
+		
+> docker volume ls
+
+> docker run -d --name mysqldb mysql:5.7
+
+> docker volume ls
+DRIVER              VOLUME NAME
+local               0d827880b7c463b6d0791f35738e70a3a7965a1ac4721411ff48d9a37a72b3c1
+
+ docker inspect ^C
+docker@default:~/Dockerfiles$ docker inspect 0d827880b7c463b6d0791f35738e70a3a7965a1ac4721411ff48d9a37a72b3c1
+[
+    {
+        "CreatedAt": "2020-11-24T11:39:28Z",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/mnt/sda1/var/lib/docker/volumes/0d827880b7c463b6d0791f35738e70a3a7965a1ac4721411ff48d9a37a72b3c1/_data",
+        "Name": "0d827880b7c463b6d0791f35738e70a3a7965a1ac4721411ff48d9a37a72b3c1",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+
+> docker logs mysqldb
+
+> docker rm mysqldb
+
+> docker volume prune
+
+> docker volume ls
+
+> docker build -t mysqldb:2 -f Dockerfile4 .
+> docker run -d --name testdatabase mysqldb:2
+
+docker volume ls
+
+docker logs testdatabase
+
+docker stats testdatabase
+
+docker inspect testdatabase
+
+ "Mounts": [
+            {
+                "Type": "volume",
+                "Name": "d6312c8596a9cf74cfe5fb165452a0ab61e12df7e15e962a46503613e6a01b5f",
+                "Source": "/mnt/sda1/var/lib/docker/volumes/d6312c8596a9cf74cfe5fb165452a0ab61e12df7e15e962a46503613e6a01b5f/_data",
+                "Destination": "/var/lib/mysql",
+                "Driver": "local",
+                "Mode": "",
+                "RW": true,
+                "Propagation": ""
+            }
+        ],
+		
+sudo -i
+
+root@default:~# ls /mnt/sda1/var/lib/docker/volumes/d6312c8596a9cf74cfe5fb165452a0ab61e12df7e15e962a46503613e6a01b5f/_data
+auto.cnf            ib_buffer_pool      mysql               server-cert.pem
+ca-key.pem          ib_logfile0         performance_schema  server-key.pem
+ca.pem              ib_logfile1         private_key.pem     sys
+client-cert.pem     ibdata1             public_key.pem
+client-key.pem      ibtmp1              pythonlogin
+
+
+
+
+		
+
+
+

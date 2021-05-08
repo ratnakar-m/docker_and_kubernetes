@@ -1,0 +1,40 @@
+hub.docker.com
+
+image -> verified -> scan for vulnerabilities
+
+http web server
+
+oracle database
+	Oracle Database Enterprise Edition
+		- Not free
+		- No tags
+		- Proceed to checkout
+		- No Metadata
+		
+oraclelinux
+	8
+	8-slim
+
+oracle weblogic server
+\
+
+Oracle -> separate repo to manage oracle images
+
+http://container.registry.oracle.com/  (read-only registry)
+
+
+OCIR (read-write)
+	only OCI users can access this registry
+	
+	
+IMAGE properties:
+	repo url (No repo url => comes from hub.docker.com)
+		eg: docker pull container-registry.oracle.com/middleware/weblogic:12.2.1.4-slim-201023
+	image name
+	tag/version
+	
+
+
+
+
+

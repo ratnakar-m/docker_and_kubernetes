@@ -1,0 +1,595 @@
+> ps ax | grep dockerd
+ 
+> docker ps //check running containers
+
+> docker ps -a
+
+> docker start testdatabase 
+
+> docker logs testdatabase
+
+2020-11-25T04:16:11.697034Z 0 [Note] mysqld: ready for connections.
+Version: '5.7.32'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server (GPL)
+
+> docker exec -it testdatabase bash
+
+root@9f5ff9494dc1:/# ls
+bin   dev                         entrypoint.sh  home  lib64  mnt  proc  run   srv  tmp  var
+boot  docker-entrypoint-initdb.d  etc            lib   media  opt  root  sbin  sys  usr
+
+root@9f5ff9494dc1:/# mysql -u root -p //admin
+mysql> show databases
+
+pythonlogin must be there
+
+show tables;
+
+---------------------------------
+
+> docker run -it --name testlogs-ubuntu --detach-keys="ctrl-y" ubuntu
+
+
+root@b5b7b354536d:/#
+mkdir cloud
+chmod 777 /usr
+ctrl-y
+
+> docker exec -it testlogs-ubuntu bash
+rmdir media
+ls
+
+> docker logs testlogs-ubuntu //show parent proc logs only 
+
+> docker inspect -f "{{.LogPath}}" testlogs-ubuntu
+/mnt/sda1/var/lib/docker/containers/b5b7b354536d7b194f807aa8ac14bd8ff7477d17dba6e9e23196d1fe56979f0f/b5b7b354536d7b194f807aa8ac14bd8ff7477d17dba6e9e23196d1fe56979f0f-json.log
+
+cat $(docker inspect -f "{{.LogPath}}" testlogs-ubuntu)
+
+
+ cat $(docker inspect -f "{{.LogPath}}" testlogs-ubuntu)
+{"log":"\u001b]0;root@b5b7b354536d: /\u0007root@b5b7b354536d:/# ^C\r\n","stream":"stdout","time":"2020-11-25T05:13:01.695662922Z"}
+{"log":"\u001b]0;root@b5b7b354536d: /\u0007root@b5b7b354536d:/# ls\r\n","stream":"stdout","time":"2020-11-25T05:13:16.138572651Z"}
+{"log":"\u001b[0m\u001b[01;36mbin\u001b[0m  \u001b[01;34mboot\u001b[0m  \u001b[01;34mdev\u001b[0m  \u001b[01;34metc\u001b[0m  \u001b[01;34mhome\u001b[0m  \u001b[01;36mlib\u001b[0m  \u001b[01;36mlib32\u001b[0m  \u001b[01;36mlib64\u001b[0m  \u001b[01;36mlibx32\u001b[0m  \u001b[01;34mmedia\u001b[0m  \u001b[01;34mmnt\u001b[0m  \u001b[01;34mopt\u001b[0m  \u001b[01;34mproc\u001b[0m  \u001b[01;34mroot\u001b[0m  \u001b[01;34mrun\u001b[0m  \u001b[01;36msbin\u001b[0m  \u001b[01;34msrv\u001b[0m  \u001b[01;34msys\u001b[0m  \u001b[30;42mtmp\u001b[0m  \u001b[01;34musr\u001b[0m  \u001b[01;34mvar\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:13:16.143246616Z"}
+{"log":"\u001b]0;root@b5b7b354536d: /\u0007root@b5b7b354536d:/# ^C\r\n","stream":"stdout","time":"2020-11-25T05:13:23.834170494Z"}
+{"log":"\u001b]0;root@b5b7b354536d: /\u0007root@b5b7b354536d:/# mkdir cloud\r\n","stream":"stdout","time":"2020-11-25T05:13:38.788676098Z"}
+{"log":"\u001b]0;root@b5b7b354536d: /\u0007root@b5b7b354536d:/# ls\r\n","stream":"stdout","time":"2020-11-25T05:13:40.004500142Z"}
+{"log":"\u001b[0m\u001b[01;36mbin\u001b[0m  \u001b[01;34mboot\u001b[0m  \u001b[01;34mcloud\u001b[0m  \u001b[01;34mdev\u001b[0m  \u001b[01;34metc\u001b[0m  \u001b[01;34mhome\u001b[0m  \u001b[01;36mlib\u001b[0m  \u001b[01;36mlib32\u001b[0m  \u001b[01;36mlib64\u001b[0m  \u001b[01;36mlibx32\u001b[0m  \u001b[01;34mmedia\u001b[0m  \u001b[01;34mmnt\u001b[0m  \u001b[01;34mopt\u001b[0m  \u001b[01;34mproc\u001b[0m  \u001b[01;34mroot\u001b[0m  \u001b[01;34mrun\u001b[0m  \u001b[01;36msbin\u001b[0m  \u001b[01;34msrv\u001b[0m  \u001b[01;34msys\u001b[0m  \u001b[30;42mtmp\u001b[0m  \u001b[01;34musr\u001b[0m  \u001b[01;34mvar\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:13:40.004520518Z"}
+{"log":"\u001b]0;root@b5b7b354536d: /\u0007root@b5b7b354536d:/# chmod 777 /usr\r\n","stream":"stdout","time":"2020-11-25T05:13:48.468405695Z"}
+{"log":"\u001b]0;root@b5b7b354536d: /\u0007root@b5b7b354536d:/# ls -al\r\n","stream":"stdout","time":"2020-11-25T05:14:07.238831184Z"}
+{"log":"total 60\r\n","stream":"stdout","time":"2020-11-25T05:14:07.240080577Z"}
+{"log":"drwxr-xr-x   1 root root 4096 Nov 25 05:13 \u001b[0m\u001b[01;34m.\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.240593538Z"}
+{"log":"drwxr-xr-x   1 root root 4096 Nov 25 05:13 \u001b[01;34m..\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.240937927Z"}
+{"log":"-rwxr-xr-x   1 root root    0 Nov 25 05:12 \u001b[01;32m.dockerenv\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.241283769Z"}
+{"log":"lrwxrwxrwx   1 root root    7 Oct  8 01:31 \u001b[01;36mbin\u001b[0m -\u003e \u001b[01;34musr/bin\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.241651723Z"}
+{"log":"drwxr-xr-x   2 root root 4096 Apr 15  2020 \u001b[01;34mboot\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.242034769Z"}
+{"log":"drwxr-xr-x   2 root root 4096 Nov 25 05:13 \u001b[01;34mcloud\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.242482319Z"}
+{"log":"drwxr-xr-x   5 root root  360 Nov 25 05:12 \u001b[01;34mdev\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.242822772Z"}
+{"log":"drwxr-xr-x   1 root root 4096 Nov 25 05:12 \u001b[01;34metc\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.24320139Z"}
+{"log":"drwxr-xr-x   2 root root 4096 Apr 15  2020 \u001b[01;34mhome\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.243548899Z"}
+{"log":"lrwxrwxrwx   1 root root    7 Oct  8 01:31 \u001b[01;36mlib\u001b[0m -\u003e \u001b[01;34musr/lib\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.243887586Z"}
+{"log":"lrwxrwxrwx   1 root root    9 Oct  8 01:31 \u001b[01;36mlib32\u001b[0m -\u003e \u001b[01;34musr/lib32\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.244223701Z"}
+{"log":"lrwxrwxrwx   1 root root    9 Oct  8 01:31 \u001b[01;36mlib64\u001b[0m -\u003e \u001b[01;34musr/lib64\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.244557451Z"}
+{"log":"lrwxrwxrwx   1 root root   10 Oct  8 01:31 \u001b[01;36mlibx32\u001b[0m -\u003e \u001b[01;34musr/libx32\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.244905448Z"}
+{"log":"drwxr-xr-x   2 root root 4096 Oct  8 01:31 \u001b[01;34mmedia\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.245239712Z"}
+{"log":"drwxr-xr-x   2 root root 4096 Oct  8 01:31 \u001b[01;34mmnt\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.245606505Z"}
+{"log":"drwxr-xr-x   2 root root 4096 Oct  8 01:31 \u001b[01;34mopt\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.245945835Z"}
+{"log":"dr-xr-xr-x 155 root root    0 Nov 25 05:12 \u001b[01;34mproc\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.246322Z"}
+{"log":"drwx------   2 root root 4096 Oct  8 01:34 \u001b[01;34mroot\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.246660151Z"}
+{"log":"drwxr-xr-x   1 root root 4096 Oct 23 17:32 \u001b[01;34mrun\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.247000102Z"}
+{"log":"lrwxrwxrwx   1 root root    8 Oct  8 01:31 \u001b[01;36msbin\u001b[0m -\u003e \u001b[01;34musr/sbin\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.247400125Z"}
+{"log":"drwxr-xr-x   2 root root 4096 Oct  8 01:31 \u001b[01;34msrv\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.247753417Z"}
+{"log":"dr-xr-xr-x  13 root root    0 Nov 25 05:12 \u001b[01;34msys\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.248218357Z"}
+{"log":"drwxrwxrwt   2 root root 4096 Oct  8 01:34 \u001b[30;42mtmp\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.248703889Z"}
+{"log":"drwxrwxrwx   1 root root 4096 Oct  8 01:31 \u001b[34;42musr\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.249580041Z"}
+{"log":"drwxr-xr-x   1 root root 4096 Oct  8 01:34 \u001b[01;34mvar\u001b[0m\r\n","stream":"stdout","time":"2020-11-25T05:14:07.250638063Z"}
+
+------------------------
+
+docker info
+
+Plugins:
+  Volume: local
+  Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local logentries splunk syslog
+
+--------------------------
+
+docker@default:~$ docker diff testlogs-ubuntu
+C /usr
+A /cloud
+C /root
+A /root/.bash_history
+D /media
+
+---------------------------
+
+EDA
+
+Event-Driven Architecture
+
+docker@default:~$ docker events --since=30m
+
+
+-------------------------------SHARING IMAGES----------------------
+on Laptop
+cd ~
+mkdir tars2511
+docker save -o ubuntu-cust-1.tar ubuntu-cust:1 
+ls -al
+
+docker rmi -f ubuntu-cust:1
+Untagged: ubuntu-cust:1
+Deleted: sha256:91e9285ee2c80ff46adb960c509abd23b4ec17f633534521da830af8888cafb4
+Deleted: sha256:86960a454b93218b0a90d35aa5955e9c8e62adb1ec7105ed3a3dbc111719cf2c
+
+docker pull //takes from cloud
+docker load //takes from block storage
+
+docker load < ubuntu-cust-1.tar
+
+docker login
+user: rmallaya
+pass: indica***747
+WARNING! Your password will be stored unencrypted in /home/docker/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+
+docker@default:~$ cat /home/docker/.docker/config.json
+{
+        "auths": {
+                "https://index.docker.io/v1/": {
+                        "auth": "cm1hbGxheWE6aW5kaWNhZGxzNzQ3"
+                }
+        },
+        "HttpHeaders": {
+                "User-Agent": "Docker-Client/19.03.12 (linux)"
+        }
+}
+
+docker tag ubuntu-cust:3 rmallaya/myubuntu:1
+ 
+docker@default:~$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+mysql               2                   a7e949ebeb2c        19 hours ago        449MB
+ping                1                   253045732a79        20 hours ago        197MB
+ubuntu              4                   2d1ddbd1c4ab        20 hours ago        72.9MB
+ubuntu-cust         2                   5556c8e01011        21 hours ago        158MB
+ubuntu-cust         3                   3d82b5a986b2        21 hours ago        72.9MB
+rmallaya/myubuntu   1                   3d82b5a986b2        21 hours ago        72.9MB
+ubuntu-cust         1                   91e9285ee2c8        24 hours ago        85.6MB
+mysql               5.7                 ae0658fdbad5        4 days ago          449MB
+httpd               latest              0a30f4c29d25        6 days ago          138MB
+oraclelinux         8                   7535676bcf14        8 days ago          429MB
+ubuntu              latest              d70eaf7277ea        4 weeks ago         72.9MB
+ubuntu              18.04               56def654ec22        2 months ago        63.2MB
+ubuntu              trusty              df043b4f0cf1        2 months ago        197MB
+
+docker push rmallaya/myubuntu:1
+
+---------------------------------PORT FORWARDING------------------------------
+static port forwarding
+iptables => service router
+
+iptables -t nat -L 
+
+//root user of the VM with dockerd
+
+root@default:~# iptables -t nat -L
+Chain PREROUTING (policy ACCEPT)
+target     prot opt source               destination
+DOCKER     all  --  anywhere             anywhere             ADDRTYPE match dst-type LOCAL
+
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination
+DOCKER     all  --  anywhere            !127.0.0.0/8          ADDRTYPE match dst-type LOCAL
+
+Chain POSTROUTING (policy ACCEPT)
+target     prot opt source               destination
+MASQUERADE  all  --  172.17.0.0/16        anywhere
+
+Chain DOCKER (2 references)
+target     prot opt source               destination
+RETURN     all  --  anywhere             anywhere
+
+-----------------------------------
+
+Chain DOCKER (2 references)
+target     prot opt source               destination
+RETURN     all  --  anywhere             anywhere
+
+all ports are free => can be utilized
+
+-----------------------------------
+
+small p (static port) 
+caps P (dyn port)
+
+-p <hostport>:<container port>
+
+docker run -d --name webserver -p 8000:80 httpd
+
+//8000 to be forwarded to
+docker inspect -f "{{.NetworkSettings.IPAddress}}" webserver
+172.17.0.5
+
+Chain DOCKER (2 references)
+target     prot opt source               destination
+RETURN     all  --  anywhere             anywhere
+DNAT       tcp  --  anywhere             anywhere             tcp dpt:8000 to:172.17.0.5:80
+------------
+docker@default:~$ curl 172.17.0.5:80
+<html><body><h1>It works!</h1></body></html>
+---------------------------------------FROm LAPTOP------------
+rmallaya@RMALLAYA-IN MINGW64 ~/tars2511
+$ curl 172.17.0.5:80
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:--  0:00:20 --:--:--     0curl: (7) Failed to connect to 172.17.0.5 port 80: Timed out
+
+
+$ curl 192.168.99.100:8000
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    45  100    45    0     0     45      0  0:00:01 --:--:--  0:00:01 45000<html><body><h1>It works!</h1></body></html>
+------------------------------FROm VM----------------------------
+docker@default:~$ cat /etc/hosts
+127.0.0.1 default localhost localhost.local
+
+# The following lines are desirable for IPv6 capable hosts
+# (added automatically by netbase upgrade)
+
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+ff02::3 ip6-allhosts
+
+docker@default:~$ curl localhost:8000
+<html><body><h1>It works!</h1></body></html>
+-----------------------------------------
+docker port webserver  //returns port mappings of a container
+80/tcp -> 0.0.0.0:8000
+
+>docker logs webserver
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 172.17.0.5. Set the 'ServerName' directive globally to suppress this message
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 172.17.0.5. Set the 'ServerName' directive globally to suppress this message
+[Wed Nov 25 07:14:14.083221 2020] [mpm_event:notice] [pid 1:tid 140641549300864] AH00489: Apache/2.4.46 (Unix) configured -- resuming normal operations
+[Wed Nov 25 07:14:14.085517 2020] [core:notice] [pid 1:tid 140641549300864] AH00094: Command line: 'httpd -D FOREGROUND'
+172.17.0.1 - - [25/Nov/2020:07:16:55 +0000] "GET / HTTP/1.1" 200 45
+192.168.99.1 - - [25/Nov/2020:07:18:49 +0000] "GET / HTTP/1.1" 200 45
+172.17.0.1 - - [25/Nov/2020:07:20:00 +0000] "GET / HTTP/1.1" 200 45
+
+>docker inspect bridge
+
+"Config": [
+                {
+                    "Subnet": "172.17.0.0/16",
+                    "Gateway": "172.17.0.1"
+                }
+            ]
+"Containers": {
+}
+
+> docker stop webserver
+> docker port webserver
+root@default:~# iptables -t nat -L 
+
+---------------------------DYN PORT FORWARD--------------
+> docker run -d --name dynwebserver -P httpd
+d549c689d290d9cb3c879069650635be693c872cd6a442a98c2bca989e293aec
+
+> docker port dynwebserver
+80/tcp -> 0.0.0.0:32768
+
+root@default:~# iptables -t nat -L
+
+Chain DOCKER (2 references)
+target     prot opt source               destination
+RETURN     all  --  anywhere             anywhere
+DNAT       tcp  --  anywhere             anywhere             tcp dpt:32768 to:172.17.0.5:80
+DNAT       tcp  --  anywhere             anywhere             tcp dpt:8000 to:172.17.0.6:80
+
+root@default:~# docker stop dynwebserver
+dynwebserver
+root@default:~# docker start dynwebserver
+dynwebserver
+
+docker port dynwebserver
+80/tcp -> 0.0.0.0:32769   //NEW port assigned
+
+----------------------REST API service--------------
+
+docker@default:~$ docker pull node:14
+
+//resources node.js and data.json
+docker@default:~$ docker build -t newnode -f Dockerfile5 .
+
+docker@default:~/Dockerfiles$ docker run -d --name testnode -p 9001:9000 newnode
+72d6953971e39b04214080751a4844ae07f48a95e127132131bd70810ba4e4ff
+
+docker ps //testnode container is running
+
+docker port testnode
+9000/tcp -> 0.0.0.0:9001
+
+laptop# docker-machine ls
+default   *        virtualbox   Running   tcp://192.168.99.100:2376           v19.03.12
+
+curl http://192.168.99.100:9001/listUsers
+
+{
+   "user1" : {
+      "name" : "mahesh",
+      "password" : "password1",
+      "profession" : "OUC",
+      "id": 1
+   },
+   "user2" : {
+      "name" : "suresh",
+      "password" : "password2",
+      "profession" : "SD",
+      "id": 2
+   },
+   "user3" : {
+      "name" : "ramesh",
+      "password" : "password3",
+      "profession" : "SE",
+      "id": 3
+   }
+}
+
+------------------------PERFORMANCE OF CONTAINER---------------------------------
+
+BULK HEAD design pattern
+docker images //check the sizes
+docker stats
+
+CONTAINER ID        NAME                CPU %               MEM USAGE / LIMIT     MEM %               NET I/O             BLOCK I/O           PIDS
+72d6953971e3        testnode            0.00%               9.902MiB / 985.4MiB   1.00%               2.62kB / 2.45kB     102kB / 0B          12
+d549c689d290        dynwebserver        0.00%               5.312MiB / 985.4MiB   0.54%               6.18kB / 0B         201kB / 0B          82
+1dadc11033af        webserver           0.00%               5.336MiB / 985.4MiB   0.54%               6.18kB / 0B         365kB / 0B          82
+b5b7b354536d        testlogs-ubuntu     0.00%               1.211MiB / 985.4MiB   0.12%               6.36kB / 0B         229kB / 0B          1
+9f5ff9494dc1        testdatabase        0.02%               172.5MiB / 985.4MiB   17.51%              6.88kB / 0B         5.41MB / 12.7MB     28
+a489c0b65a5d        ubuntu              0.00%               1.086MiB / 985.4MiB   0.11%               6.43kB / 0B         406kB / 0B          1
+
+Observations: all containers has the limit 985.4MiB
+
+//update resources during runtime
+> docker update --cpu-shares=10 --memory=100M --memory-swap=150M webserver
+
+> docker stats //confirm memory
+
+//Confirming cpu shares of the container
+
+root@default:~# cd /sys/fs/cgroup/cpu/docker/1dadc11033af8659f8c2ac5ab4a4a4f31820c101dc574b6453eaa84b487f250e
+# ls
+cgroup.clone_children  cpu.rt_period_us       notify_on_release
+cgroup.procs           cpu.rt_runtime_us      tasks
+cpu.cfs_period_us      cpu.shares
+cpu.cfs_quota_us       cpu.stat
+root@default:/sys/fs/cgroup/cpu/docker/1dadc11033af8659f8c2ac5ab4a4a4f31820c101dc574b6453eaa84b487f250e# cat cpu.shares
+10
+
+root@default:/sys/fs/cgroup/memory/docker/1dadc11033af8659f8c2ac5ab4a4a4f31820c101dc574b6453eaa84b487f250e# cat memory.memsw.limit_in_bytes
+157286400
+
+root@default:/sys/fs/cgroup/memory/docker/1dadc11033af8659f8c2ac5ab4a4a4f31820c101dc574b6453eaa84b487f250e# cat memory.limit_in_bytes
+104857600
+
+SIDE CAR - DESIGn PATTERN
+
+Monitor webserver (httpd)
+
+(ngnix usually used as a sidecar for monitoring)
+
+> from Laptop
+INTEND to monitor the below URL
+
+curl http://192.168.99.100:8000
+
+docker run -d --name monitorwebserver \
+--health-cmd="curl 192.168.99.100:8000" \
+--health-retries=5 --health-timeout=1s \
+--health-interval=1s nginx
+
+
+ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                    PORTS                    NAMES
+af228f3ab4fc        nginx               "/docker-entrypoint.…"   16 seconds ago      Up 16 seconds (healthy)   80/tcp                   monitorwebserver
+
+> docker stop webserver
+webserver
+
+> docker port webserver
+nothing
+
+
+docker ps -a //to check if 
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                      PORTS                    NAMES
+af228f3ab4fc        nginx               "/docker-entrypoint.…"   9 minutes ago       Up 9 minutes (unhealthy)    80/tcp                   monitorwebserver
+
+docker inspect -f "{{json .State.Health}}" monitorwebserver
+
+
+docker inspect -f "{{json .State.Health}}" monitorwebserver
+{"Status":"unhealthy","FailingStreak":243,"Log":[{"Start":"2020-11-25T10:07:57.704497294Z","End":"2020-11-25T10:07:57.902054825Z","ExitCode":7,"Output":"  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0curl: (7) Failed to connect to 192.168.99.100 port 8000: Connection refused\n"},{"Start":"2020-11-25T10:07:58.912257058Z","End":"2020-11-25T10:07:59.126955078Z","ExitCode":7,"Output":"  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0curl: (7) Failed to connect to 192.168.99.100 port 8000: Connection refused\n"},{"Start":"2020-11-25T10:08:00.148181319Z","End":"2020-11-25T10:08:00.28250086Z","ExitCode":7,"Output":"  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0curl: (7) Failed to connect to 192.168.99.100 port 8000: Connection refused\n"},{"Start":"2020-11-25T10:08:01.298547208Z","End":"2020-11-25T10:08:01.5028623Z","ExitCode":7,"Output":"  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0curl: (7) Failed to connect to 192.168.99.100 port 8000: Connection refused\n"},{"Start":"2020-11-25T10:08:02.526389501Z","End":"2020-11-25T10:08:02.753177332Z","ExitCode":7,"Output":"  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0curl: (7) Failed to connect to 192.168.99.100 port 8000: Connection refused\n"}]}
+
+> docker start webserver
+
+docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                    PORTS                    NAMES
+af228f3ab4fc        nginx               "/docker-entrypoint.…"   14 minutes ago      Up 14 minutes (healthy)   80/tcp                   monitorwebserver
+
+-------------------------------COMMUNICATIOn BETWEEN CONTAINERS-------------------------------
+
+container 1 reaching/communicating-with/requesting container 2 - two strategies
+
+	- requester (client container) discovers (client side discovery)
+		- IPC (reaching via IP address)
+		- requester and server containers must be in same network
+	
+	- requester knows the service name - 
+		- server side discovery
+		- somebody else discovers - who discovers - Gateway
+		- RPC
+		- requester and server containers can be on different networks
+		- promotes distributed computing on server side
+
+NETWORK CONFIGURATION
+---------------------
+	- scope of network	
+		- where are the containers?
+		- how are they communicating?
+		
+		- docker inspect bridge  (multiple containers)
+			 "com.docker.network.bridge.name": "docker0",
+			 
+		- multiple dockerds/machines (bridge overlay or network over network)
+		- multiple domains MACVLAN
+		
+----------------------------NETWORK AS A SERVICE----------------------------------
+
+	- estimate capacity threshold
+		- how many containers?
+		- how many IPs 172.17.0.0 -> 172.17.255.255 (256*256 = 65536) -> 3 IPs preservred
+			[172.17.0.0/16  => last 2 components can be replacebale]
+			
+					172.17.0.0 -> NET MASK 1
+					172.17.255.255 -> NET MASK 2
+					17.15.0.1 -> GATEWAY
+		  No. of containers -> 65536 - 3 = 65533
+		- how many machines?
+--------------------------SOA USECASE-------------------
+docker network create dbnetwork --subnet 172.100.0.0/16
+c7330528c65f78ad04d68ae9f152c95158b8002abf6874b2068e2783f2035a4c
+
+docker@default:~/soa$ docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+8d6b333e0c51        bridge              bridge              local
+c7330528c65f        dbnetwork           bridge              local
+a35615e0c826        host                host                local
+c97f1756040f        none                null                local
+docker@default:~/soa$ docker inspect dbnetwork
+[
+    {
+        "Name": "dbnetwork",
+        "Id": "c7330528c65f78ad04d68ae9f152c95158b8002abf6874b2068e2783f2035a4c",
+        "Created": "2020-11-25T11:10:05.756487161Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.100.0.0/16"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {},
+        "Options": {},
+        "Labels": {}
+    }
+]
+
+//have resources database.sql and insertsql.sql in current directory
+
+from mysql:5.7
+env MYSQL_ROOT_PASSWORD=admin
+env MYSQL_DATABASE=demo
+copy *.sql /docker-entrypoint-initdb.d/
+
+#docker build -t newsoadb -f Dockerfile6 .
+#docker run -d --name testsoadb --net=dbnetwork --ip=172.100.100.100 newsoadb
+
+docker inspect dbnetwork
+"Containers": {
+            "92c01d321233df06a7d16127af32c7e13e5d31d1a58712e6aab2a4abca3ead12": {
+                "Name": "testsoadb",
+                "EndpointID": "8e31981a9741abfd60fb1ececda88d0a320737d362f39fe6c2ee3e9511c9ef08",
+                "MacAddress": "02:42:ac:64:64:64",
+                "IPv4Address": "172.100.100.100/16",
+                "IPv6Address": ""
+            }
+        },
+		
+> docker logs testsoadb
+
+2020-11-25 11:20:49+00:00 [Note] [Entrypoint]: Creating database demo
+2020-11-25 11:20:49+00:00 [Note] [Entrypoint]: /usr/local/bin/docker-entrypoint.sh: running /docker-entrypoint-initdb.d/database.sql
+2020-11-25 11:20:49+00:00 [Note] [Entrypoint]: /usr/local/bin/docker-entrypoint.sh: running /docker-entrypoint-initdb.d/insertsql.sql
+.
+.
+.
+2020-11-25T11:20:51.561250Z 0 [Note] mysqld: ready for connections.
+Version: '5.7.32'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server (GPL)
+
+> docker exec -it testsoadb bash
+
+root@92c01d321233:/# mysql -u root -p
+mysql> show databases
+mysql> use demo
+mysql> show tables
+mysql> select * from employees
+
+
+----GETTING APPSERVER READY----
+
+IPC between DB and APPSERVER
+
+  232  docker inspect newsoanode
+  233  docker build -t newsoanode -f Dockerfile7 .
+  234  vi Dockerfile7
+  235  docker images
+  236  docker run -d --name testsoanode -p 9500:9000 --net=dbnetwork newsoanode
+  237  docker port testsoanode
+  238  vi Dockerfile7
+  239  docker logs testsoanode
+  240  docker inspect dbnetwork
+  
+ docker@default:~/soa$ curl localhost:9500/listEmployees
+[{"first_name":"Lorenz","last_name":"Vanthillo","department":"IT","email":"lvthillo@mail.com"}]
+
+
+---PROVE DB not able to ping from containersin other network and able to ping from containers in same NW ---------
+
+docker@default:~/soa$ docker run -it --name testservice ubuntu:trusty
+root@ed71cc6076c2:/# ping -c3 172.100.100.100
+PING 172.100.100.100 (172.100.100.100) 56(84) bytes of data.
+
+--- 172.100.100.100 ping statistics ---
+3 packets transmitted, 0 received, 100% packet loss, time 2056ms
+
+root@ed71cc6076c2:/# exit
+
+docker@default:~/soa$ docker run --rm ping:1 172.100.100.100
+PING 172.100.100.100 (172.100.100.100) 56(84) bytes of data.
+
+--- 172.100.100.100 ping statistics ---
+3 packets transmitted, 0 received, 100% packet loss, time 2062ms
+
+docker@default:~/soa$ docker run --net=dbnetwork --rm ping:1 172.100.100.100
+PING 172.100.100.100 (172.100.100.100) 56(84) bytes of data.
+64 bytes from 172.100.100.100: icmp_seq=1 ttl=64 time=0.069 ms
+64 bytes from 172.100.100.100: icmp_seq=2 ttl=64 time=0.052 ms
+64 bytes from 172.100.100.100: icmp_seq=3 ttl=64 time=0.225 ms
+
+-----------------------------------------------
+-----------------------------
+
+
+

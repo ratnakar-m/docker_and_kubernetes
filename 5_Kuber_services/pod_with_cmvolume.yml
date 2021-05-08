@@ -1,0 +1,16 @@
+kind: Pod 
+apiVersion: v1 
+metadata:
+  name: pod-from-cm-volume
+  namespace: demo
+spec:
+  containers:
+    - name: env-var-configmap
+      image: nginx
+      volumeMounts:
+        - mountPath: /config
+          name: appconfig-data-volume
+  volumes:
+    - name: appconfig-data-volume
+      configMap:
+         name: example-configmap

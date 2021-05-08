@@ -1,0 +1,10 @@
+# Simulation Shell Application
+
+FROM ubuntu
+LABEL MAINTAINER ratnakar@oracle.com
+COPY sample.sh /code/sample.sh
+COPY testfile /code/testfile
+RUN chmod +x /code/sample.sh
+CMD sh /code/sample.sh /code/testfile
+
+#docker build -t ubuntu-cust:3 -f Dockerfile1 .

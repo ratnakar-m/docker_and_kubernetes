@@ -1,0 +1,7 @@
+GET http://localhost:8080/
+GET http://localhost:8080/toggle-live
+GET http://localhost:8080/toggle-ready
+GET http://localhost:8080/logs
+GET http://localhost:8080/info
+GET http://localhost:8080/shutdown
+GET http://localhost:8080/memory-eater?mb=50

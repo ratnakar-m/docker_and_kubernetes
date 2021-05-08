@@ -1,0 +1,3 @@
+https://goinbigdata.com/docker-run-vs-cmd-vs-entrypoint/
+https://www.ctl.io/developers/blog/post/dockerfile-entrypoint-vs-cmd/
+https://phoenixnap.com/kb/docker-cmd-vs-entrypoint

@@ -1,0 +1,282 @@
+docker start $(docker ps -aq)
+
+--------------------------LOGGING-----------------------------------
+configuring one container log file is a nightmare for ops
+	- More coontainer logs files
+	
+	Note: container logs different from application logs.
+	
+by default log files are in append mode.
+we can configure when to rotate logs
+	based on size
+	based on date
+	
+FluentD - advanced json format (sort, filter etc.)
+ELK changed to EFK
+
+docker run -d --name logs10\
+    --log-driver json-file \
+    --log-opt max-size=1k \
+    --log-opt max-file=10 \
+    --log-opt mode=non-blocking \
+    alpine /bin/sh -c "while true; do sleep 2; df -h; done"
+	
+docker inspect log10
+
+ "HostConfig": {
+            "Binds": null,
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {
+                    "max-file": "10",
+                    "max-size": "1k",
+                    "mode": "non-blocking"
+                }
+            }
+			
+docker logs logs10
+
+docker inspect -f "{{.LogPath}}" logs10
+
+/mnt/sda1/var/lib/docker/containers/ed86de59afbcbd7cb51f5416cec0bdc79237852befa61d332c4586f37a9b88fe/ed86de59afbcbd7cb51f5416cec0bdc79237852befa61d332c4586f37a9b88fe-json.log
+
+root@default:/mnt/sda1/var/lib/docker/containers/ed86de59afbcbd7cb51f5416cec0bdc79237852befa61d332c4586f37a9b88fe# ls
+checkpoints
+config.v2.json
+ed86de59afbcbd7cb51f5416cec0bdc79237852befa61d332c4586f37a9b88fe-json.log
+ed86de59afbcbd7cb51f5416cec0bdc79237852befa61d332c4586f37a9b88fe-json.log.1
+ed86de59afbcbd7cb51f5416cec0bdc79237852befa61d332c4586f37a9b88fe-json.log.2
+ed86de59afbcbd7cb51f5416cec0bdc79237852befa61d332c4586f37a9b88fe-json.log.3
+ed86de59afbcbd7cb51f5416cec0bdc79237852befa61d332c4586f37a9b88fe-json.log.4
+ed86de59afbcbd7cb51f5416cec0bdc79237852befa61d332c4586f37a9b88fe-json.log.5
+ed86de59afbcbd7cb51f5416cec0bdc79237852befa61d332c4586f37a9b88fe-json.log.6
+ed86de59afbcbd7cb51f5416cec0bdc79237852befa61d332c4586f37a9b88fe-json.log.7
+ed86de59afbcbd7cb51f5416cec0bdc79237852befa61d332c4586f37a9b88fe-json.log.8
+ed86de59afbcbd7cb51f5416cec0bdc79237852befa61d332c4586f37a9b88fe-json.log.9
+hostconfig.json
+hostname
+hosts
+mounts
+resolv.conf
+resolv.conf.hash
+
+-------------------------------------------UI--------------------------------------
+	- open responsive design
+	- OJET - HTML, CSS Requires.js, Knockout.js (databinind), Cordova (mobile development)
+		- Inter surface UI (mobile, tablet, laptop, desktop)
+		- External devices (TV)
+		- based on nodejs
+	- WIDE (Web integrated IDE)
+	
+	
+Dockerfile8
+
+docker build -t testsoaui -f Dockerfile8 .
+docker run -d --name testsoaui -p 8501:8000 newojet
+docker logs testsoaui
+ 
+In chrome: http://192.168.99.100:8501/
+
+staging a file into the system
+
+vi incidents.html
+<h1> Changed by Docker....<h1>
+
+> docker exec -it testsoaui bash
+
+root@5d4581f5e12f:/demo#cd /demo/src/js/views
+root@5d4581f5e12f:/demo/src/js/views# ls
+about.html  customers.html  dashboard.html  incidents.html 
+root@5d4581f5e12f:/demo/src/js/views# exit
+
+> docker cp incidents.html testsoaui:/demo/src/js/views/incidents.html
+http://192.168.99.100:8501/?ojr=incidents
+
+--------------------------------------HADLE -> MANAGE ERRORS---------------------
+
+IMPLICIT EXIT of CONTAINER due to Transient errors
+	- resource limit issue
+	- N/W packet issues
+	- ATTACH (EXIT)
+	- 429 - Too many requests
+	
+First thigs First -> CINTAINER should be restarted
+Second thing - why it failed? This can be checked later
+
+RESTART-POLICY
+
+docker inspect <container>
+
+"HostConfig.RestartPolicy": {
+                "Name": "no", //NO, ALWAYS, ON-FAILURE:X
+                "MaximumRetryCount": 0
+            },
+
+> docker run -it --name testalpine --restart=always alpine
+/ # exit //it exits and restarts due to retsrat prop
+
+> docker ps
+
+> docker inspect -f "{{.RestartCount}}" testalpine
+1
+
+> docker attach testalpine
+/ # exit
+> docker inspect -f "{{.RestartCount}}" testalpine
+2
+
+------------------------------------------------RELEASE MGMT-------------------------------
+Code
+Dockerfile
+Docker Image
+Docker Container
+Health Test - Resource //cpu, memory
+Health Test - Response //ngnix health test
+
+in prod - single layer image preferred
+
+docker import - for single layer
+
+> cat ubuntu-cust-1.tar | docker import -  newrelease:1
+
+> docker inspect newrelease:1
+"RootFS": {
+	"Type": "layers",
+	"Layers": [
+		"sha256:0870d66c030b7778952a3d1abb9cd020658e0af0f348490171df0062f28e6792"
+	]
+},
+
+> docker history newrelease:1
+IMAGE               CREATED             CREATED BY          SIZE                COMMENT
+fac74b4da846        2 minutes ago                           88MB                Imported from -
+
+> docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+newrelease          1                   fac74b4da846        3 minutes ago       88MB
+
+---------------------------
+
+USUALLy we use docker-compose in DEV environment to bring up all the containers in DEV environment
+
+version: '3'
+services:
+  database:
+    image: mysql:2
+  web:
+     image: nginx
+     ports: 
+     - "2000:80"
+
+===========================	 
+$ docker-compose up -d
+===========================
+
+Creating network "tars2511_default" with the default driver
+Creating tars2511_web_1       ... done                                                                                                                Creating tars2511_databases_1 ... done 
+
+> docker network ls
+
+4aaa177c18db        tars2511_default    bridge              local
+
+> docker inspect 4aaa177c18db
+"Containers": {
+            "173e32d5423e540b992d9e281be9e6ccc561bb2fa782aa943c10fc95100bfd9e": {
+                "Name": "tars2511_databases_1",
+                "EndpointID": "918f47944104df96e1ff99e2f58cd885d28c50ee0c5545823f274035d9d8910f",
+                "MacAddress": "02:42:ac:12:00:03",
+                "IPv4Address": "172.18.0.3/16",
+                "IPv6Address": ""
+            },
+            "ba46802a23fe8b75290d1dbcfbf618f80dfccab6882254ad9816b55755040e06": {
+                "Name": "tars2511_web_1",
+                "EndpointID": "de293b92a6febfd924e79de29eae809e056e9ab7f5e57dfe386af9783dcb29d9",
+                "MacAddress": "02:42:ac:12:00:02",
+                "IPv4Address": "172.18.0.2/16",
+                "IPv6Address": ""
+            }
+        },
+		
+rmallaya@RMALLAYA-IN MINGW64 ~/tars2511
+$ docker port tars2511_databases_1   //IPC communication. ports not exposed.
+
+rmallaya@RMALLAYA-IN MINGW64 ~/tars2511
+$ docker port tars2511_web_1 //UI RPC to node. ports exposed.
+80/tcp -> 0.0.0.0:2000
+
+rmallaya@RMALLAYA-IN MINGW64 ~/tars2511
+$ curl 192.168.99.100:2000
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+
+--------------ENV at runtime to CONTAINER--------------
+
+> docker run -d --name checkdb -e MYSQL_ROOT_PASSWORD=tiger mysql:2
+> docker exec -it checkdb bash
+root@95c3a3aff0c6:/# mysql -u root -p
+Enter password:
+
+cat database.env
+MYSQL_ROOT_PASSWORD=tiger
+
+docker run -d --name checkdb1 --env-file=database.env newmysql:1
+
+-------------------------MAP existing volumne to the new container-------------
+docker volume ls
+
+pick one volume-id
+
+docker run -i -t  --name alpinevolume -v <volume-id>:/apps -w /apps alpine
+
+> docker run -i -t  --name alpinevolume -v 9a9259fe6fb2444064d1864ad054bdc7f22c6aa2cb5b0d3dfbe2762414b535ae:/apps -w /apps alpine
+
+/apps # ls //viewing the mapped volume contents
+auto.cnf            client-cert.pem     ib_logfile0         ibtmp1              private_key.pem     server-cert.pem
+ca-key.pem          client-key.pem      ib_logfile1         mysql               public_key.pem      server-key.pem
+ca.pem              ib_buffer_pool      ibdata1             performance_schema  pythonlogin         sys
+
+
+------------------------------
+docker toolbox
+
+docker-machine ssh default
+
+------------------------------------------------
+ 
+
+
+
+
+	
+
+ 
+	
+	
+
+
+
+

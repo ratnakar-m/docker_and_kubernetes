@@ -1,0 +1,47 @@
+Reference links:
+
+https://docs.docker.com/machine/install-machine/
+https://github.com/docker/machine/issues/4441
+
+
+1) download docker-machine executable
+
+Run from git bash onn windows:
+
+$ base=https://github.com/docker/machine/releases/download/v0.16.0 &&
+  mkdir -p "$HOME/bin" &&
+  curl -L $base/docker-machine-Windows-x86_64.exe > "$HOME/bin/docker-machine.exe" &&
+  chmod +x "$HOME/bin/docker-machine.exe"
+
+
+
+2) create a virtual switch from Hyper-V manager
+take defaults
+
+
+3) Get-VMSwitch -SwitchType External
+
+Name     SwitchType NetAdapterInterfaceDescription
+----     ---------- ------------------------------
+myswitch External   Intel(R) Dual Band Wireless-AC 8265
+
+
+
+4) docker-machine create -d hyperv --hyperv-virtual-switch "<NameOfVirtualSwitch>" <nameOfNode>
+
+eg: docker-machine create -d hyperv --hyperv-virtual-switch "myswitch" myvm1
+
+5) docker-machine ls
+
+6) docker-machine stop myvm1
+Stopping "myvm1"...
+(myvm1) Waiting for host to stop...
+Machine "myvm1" was stopped.
+
+----------
+docker-machine regenerate-certs myvm1
+
+docker-machine create myvm3
+"VBoxManage not found. Make sure VirtualBox is installed and VBoxManage is in the path"
+ 
+ 

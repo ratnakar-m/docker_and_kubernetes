@@ -1,0 +1,19 @@
+docker info
+
+docker container run --publish 80:80 --detach --name webstore nginx
+
+docker container ps|ls
+
+docker container ps|ls -a
+
+docker container logs <container>
+
+docker container top <container>
+
+docker container rm <container> ...
+
+docker container rm -f <container>
+
+docker container exec -it nginxcont bash
+
+apt-get update && apt-get install procps

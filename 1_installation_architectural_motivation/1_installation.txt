@@ -1,0 +1,121 @@
+https://oracle.zoom.us/j/488866249?pwd=TDBlQ2FxUCs0VFlwRFR6dEtLQnZBdz09 
+
+Prequisites:
+------------
+No vpn
+WINDOWS/MAC -> 16 gb ram
+C DRIVE –> 10-20 GB HDD
+WINDOWS -> VIRTUALIZATION ENABLED  (TASK MANAGER – PERFORMANCE –CPU)
+VIRTUALBOX (WWW.VIRTUALBOX.ORG) -> 6.0 +
+WINDOWS -> UNINSTALL DOCKER FOR WINDOWS -> RESTART IS REQURIED
+WINDOWS -> TURN WINDOWS FEATURES ON/OFF (HYPERV-UNCHECKED)  RESTART?
+HUB.DOCKER.COM  (PERSONAL EMAIL ID)- REPOSITORY ::rmallaya/indica******
+GITHUB.COM -> CODE REPOSITORY (PERSONAL EMAIL ID) :: ratnakar-m/
+
+https://github.com/docker/toolbox/releases
+
+go to quickstart terminal -> properties -> shortcut
+	
+-> "C:\Program Files\Git\bin\bash.exe" --login -i "C:\Program Files\Docker Toolbox\start.sh"
+(on Mac -- docker-machine start default)
+	
+-> This script does 7 steps in installation setup slide along with certs
+
+-> This script leverages virual box in the background.
+	
+$ docker-machine ls
+NAME      ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER      ERRORS
+default   *        virtualbox   Running   tcp://192.168.99.100:2376           v19.03.12
+myvm1     -        hyperv       Error
+	
+
+on host machine:
+	
+/c/Users/rmallaya/.docker
+/c/Users/rmallaya/.docker/machine/machines/default
+
+
+------------------
+for mac users:
+docker-machine ssh default
+
+for windows users:
+using puttY
+username: docker
+password: tcuser
+
+OR 
+
+docker-machine ssh
+
+-----------------------
+Use putty on IP: 192.168.99.100
+(docker-machine ssh default)
+
+username: docker
+password: tcuser (tinycore linux user)
+
+DOCKER TERMINAL
+
+login as: docker
+docker@192.168.99.100's password:
+   ( '>')
+  /) TC (\   Core is distributed with ABSOLUTELY NO WARRANTY.
+ (/-_--_-\)           www.tinycorelinux.net
+ 
+  ps ax | grep dockerd
+  
+docker info
+	 Registry: https://index.docker.io/v1/  -> default url from where images are pulled
+	 CPUs: 1
+	 Total Memory: 985.4MiB
+	 
+docker search httpd
+docker pull httpd
+	image - 
+		metadata, 
+		architecture, 
+		services (ports), 
+		env paths, 
+		dependency softwares
+		bootstrapper - main() CMD (command executed when the container is started with that image)
+		
+docker inspect <image id>
+
+docker pull oraclelinux:8
+
+docker system df
+
+docker create --name ApacheServer httpd
+docker ps -a
+docker start eda/ApacheServer
+docker stats
+docker inspect ApacheServer
+	platform of the container
+	LogPath
+	Runtime logs for container
+	Log Driver for container
+	Port bindings
+	Mounts
+	Network Settings
+	Container IP address(172.17.0.2) -> runtime property
+	Sandbox ID -> security context of container
+	
+docker stop ApacheServer
+
+ADMIN TERMINAL
+docker@default:~$ sudo -i
+root@default:~#
+
+ls /var/lib/docker/image/overlay2/
+distribution       
+imagedb            
+layerdb            
+repositories.json //relationship between image db and layer db
+
+ls /var/lib/docker/image/overlay2/layerdb/sha256/
+ls /var/lib/docker/image/overlay2/imagedb/content/sha256/
+
+	
+https://www.osboxes.org/ubuntu/#ubuntu-16-04-vbox
+
